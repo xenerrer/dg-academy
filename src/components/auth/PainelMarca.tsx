@@ -25,6 +25,13 @@ export function PainelMarca() {
       </div>
 
       <div className="relative hidden lg:block">
+        <p className="font-display text-heading font-bold tracking-tight">
+          <span className="text-dg-yellow">DG</span>TECH{' '}
+          <span className="text-dg-yellow">/</span>Academy
+        </p>
+      </div>
+
+      <div className="relative hidden lg:block">
         <p className="dg-eyebrow mb-4">Plataforma de integração e treinamentos</p>
         <h2 className="max-w-sm font-display text-heading font-bold leading-tight">
           O onboarding que <span className="text-dg-yellow">energiza</span> a nossa equipe desde
