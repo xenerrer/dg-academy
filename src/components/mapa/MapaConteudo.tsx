@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowLeft } from 'lucide-react'
 import { useAvancoMapa } from '@/hooks/use-avanco-mapa'
 import { MapaJornada } from './MapaJornada'
-import { ContadorPontos } from './ContadorPontos'
+import { MapaHeader } from './MapaHeader'
 import { CardModuloAtual } from './CardModuloAtual'
 import { ResumoJornada } from './ResumoJornada'
 import type { Modulo, Profile, StatusModulo } from '@/types/database'
@@ -60,37 +59,11 @@ export function MapaConteudo({
 
   return (
     <div className="relative min-h-[100dvh] bg-dg-bg">
-      {/* top bar do desktop — barra real, não overlay */}
-      <header className="sticky top-0 z-40 hidden items-center justify-between border-b border-dg-line bg-dg-bg/90 px-8 py-4 backdrop-blur lg:flex">
-        <div className="flex items-center gap-4">
-          <Link
-            to="/"
-            aria-label="Voltar para a trilha"
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-dg-line text-dg-text transition hover:border-dg-yellow hover:text-dg-yellow"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <h1 className="dg-secao text-subtitle">minhaJornada</h1>
-        </div>
-        <ContadorPontos valor={pontosHud} />
-      </header>
+      <MapaHeader pontos={pontosHud} />
 
-      {/* HUD flutuante do mobile — pointer-events-none para não bloquear casas */}
-      <div className="pointer-events-none fixed inset-x-0 top-0 z-40 mx-auto flex max-w-[430px] items-center justify-between px-4 pt-4 lg:hidden">
-        <Link
-          to="/"
-          aria-label="Voltar para a trilha"
-          className="pointer-events-auto flex h-11 w-11 items-center justify-center rounded-full border border-dg-line bg-dg-bg/70 text-dg-text backdrop-blur transition hover:border-dg-yellow hover:text-dg-yellow"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Link>
-        <div className="pointer-events-auto">
-          <ContadorPontos valor={pontosHud} />
-        </div>
-      </div>
-
-      {/* corpo: mobile = trilha só; desktop = trilha + painel lateral */}
-      <div className="mx-auto max-w-6xl px-0 pb-36 pt-20 lg:grid lg:grid-cols-[1fr_360px] lg:items-start lg:gap-10 lg:px-8 lg:pb-16 lg:pt-10">
+      {/* corpo: mobile = trilha só; desktop = trilha + painel lateral. pt-32 no
+          mobile abre espaço pras duas linhas do HUD fixo (voltar+pontos, toggle) */}
+      <div className="mx-auto max-w-6xl px-0 pb-36 pt-32 lg:grid lg:grid-cols-[1fr_360px] lg:items-start lg:gap-10 lg:px-8 lg:pb-16 lg:pt-10">
         <MapaJornada
           usuario={usuario}
           modulos={modulos}

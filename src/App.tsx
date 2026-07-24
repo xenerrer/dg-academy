@@ -7,7 +7,8 @@ import Trilha from '@/pages/Trilha'
 import Aula from '@/pages/Aula'
 import Login from '@/pages/Login'
 import Onboarding from '@/pages/Onboarding'
-import Mapa from '@/pages/Mapa'
+import MapaEstatico from '@/pages/MapaEstatico'
+import MapaAnimado from '@/pages/MapaAnimado'
 import Perfil from '@/pages/Perfil'
 import GestaoPainel from '@/pages/GestaoPainel'
 import GestaoColaboradores from '@/pages/GestaoColaboradores'
@@ -27,7 +28,13 @@ function Layout({ children }: { children: React.ReactNode }) {
   const pontos = conclusoes.reduce((soma, c) => soma + c.pontos_ganhos, 0)
 
   // login, onboarding e mapa são tela cheia 9:16 — sem nav
-  if (pathname === '/login' || pathname === '/bem-vindo' || pathname === '/mapa') return <>{children}</>
+  if (
+    pathname === '/login' ||
+    pathname === '/bem-vindo' ||
+    pathname === '/mapa' ||
+    pathname === '/mapa/animado'
+  )
+    return <>{children}</>
 
   return (
     <>
@@ -49,7 +56,8 @@ export default function App() {
             {/* Rotas protegidas — redirecionam para login se não autenticado */}
             <Route path="/" element={<ProtectedRoute><Trilha /></ProtectedRoute>} />
             <Route path="/bem-vindo" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
-            <Route path="/mapa" element={<ProtectedRoute><Mapa /></ProtectedRoute>} />
+            <Route path="/mapa" element={<ProtectedRoute><MapaEstatico /></ProtectedRoute>} />
+            <Route path="/mapa/animado" element={<ProtectedRoute><MapaAnimado /></ProtectedRoute>} />
             <Route path="/aula/:moduloId" element={<ProtectedRoute><Aula /></ProtectedRoute>} />
             <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
             <Route path="/gestao" element={<ProtectedRoute><GestaoPainel /></ProtectedRoute>} />
