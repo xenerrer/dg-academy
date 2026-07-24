@@ -3,16 +3,5 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "vite",
-  "outputDirectory": "dist",
-  "env": {
-    "VITE_SUPABASE_URL": {
-      "description": "Supabase project URL"
-    },
-    "VITE_SUPABASE_ANON_KEY": {
-      "description": "Supabase anonymous key"
-    },
-    "VITE_PANDA_LIBRARY_ID": {
-      "description": "Panda Video library ID"
-    }
-  }
+  "outputDirectory": "dist"
 }
