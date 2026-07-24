@@ -24,9 +24,12 @@ import {
   QUESTOES,
   SETORES,
   TRILHA,
+  TRILHA_MISSAO_VISAO_VALORES,
+  TRILHA_CODIGOS_CONDUTA,
+  TRILHA_REGRAS_DG,
   USUARIO_ATUAL,
 } from '@/mocks/dados'
-import type { ConclusaoModulo, NivelExperiencia, StatusModulo } from '@/types/database'
+import type { ConclusaoModulo, NivelExperiencia, StatusModulo, Trilha } from '@/types/database'
 
 /** Simula latência de rede para a interface não parecer instantânea demais. */
 const atraso = <T>(dado: T, ms = 220): Promise<T> =>
@@ -38,6 +41,22 @@ export async function obterUsuarioAtual() {
 
 export async function obterTrilha() {
   return atraso(TRILHA)
+}
+
+/**
+ * Lista todas as trilhas que um usuário deve ver:
+ * - 3 trilhas obrigatórias (Missão/Visão/Valores, Códigos, Regras)
+ * - A trilha de integração (por setor do usuário, ou geral)
+ */
+export async function listarTrilhasDoUsuario(usuario = USUARIO_ATUAL): Promise<Trilha[]> {
+  const trilhas: Trilha[] = [
+    TRILHA_MISSAO_VISAO_VALORES,
+    TRILHA_CODIGOS_CONDUTA,
+    TRILHA_REGRAS_DG,
+    TRILHA,
+  ]
+  // Ordenar por ordem (as obrigatórias vêm primeiro)
+  return atraso(trilhas.sort((a, b) => a.ordem - b.ordem))
 }
 
 export async function listarSetores() {
