@@ -94,27 +94,27 @@ export const TRILHA_REGRAS_DG: Trilha = {
 
 export const MODULOS: Modulo[] = [
   // Trilha: Integração DG Tech
-  { id: 'mod-1', trilha_id: TRILHA.id, numero: 1, titulo: 'Boas-vindas à DG', descricao: null, capa_url: null, ordem: 0 },
-  { id: 'mod-2', trilha_id: TRILHA.id, numero: 2, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: null, ordem: 1 },
-  { id: 'mod-3', trilha_id: TRILHA.id, numero: 3, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: null, ordem: 2 },
-  { id: 'mod-4', trilha_id: TRILHA.id, numero: 4, titulo: 'Segurança & EPIs', descricao: null, capa_url: null, ordem: 3 },
-  { id: 'mod-5', trilha_id: TRILHA.id, numero: 5, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: null, ordem: 4 },
-  { id: 'mod-6', trilha_id: TRILHA.id, numero: 6, titulo: 'Certificação DG Tech', descricao: null, capa_url: null, ordem: 5 },
+  { id: 'mod-1', trilha_id: TRILHA.id, numero: 1, titulo: 'Boas-vindas à DG', descricao: null, capa_url: '/capas/mod-1.jpg', ordem: 0 },
+  { id: 'mod-2', trilha_id: TRILHA.id, numero: 2, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: '/capas/mod-2.jpg', ordem: 1 },
+  { id: 'mod-3', trilha_id: TRILHA.id, numero: 3, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: '/capas/mod-3.jpg', ordem: 2 },
+  { id: 'mod-4', trilha_id: TRILHA.id, numero: 4, titulo: 'Segurança & EPIs', descricao: null, capa_url: '/capas/mod-4.jpg', ordem: 3 },
+  { id: 'mod-5', trilha_id: TRILHA.id, numero: 5, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: '/capas/mod-5.jpg', ordem: 4 },
+  { id: 'mod-6', trilha_id: TRILHA.id, numero: 6, titulo: 'Certificação DG Tech', descricao: null, capa_url: '/capas/mod-6.jpg', ordem: 5 },
 
   // Trilha: Missão, Visão e Valores (obrigatória)
-  { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: null, ordem: 0 },
-  { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: null, ordem: 1 },
-  { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: null, ordem: 2 },
+  { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: '/capas/mod-mvv-1.jpg', ordem: 0 },
+  { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: '/capas/mod-mvv-2.jpg', ordem: 1 },
+  { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: '/capas/mod-mvv-3.jpg', ordem: 2 },
 
   // Trilha: Códigos de Conduta (obrigatória)
-  { id: 'mod-cond-1', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 1, titulo: 'Ética e Integridade', descricao: 'Princípios éticos na DG Tech.', capa_url: null, ordem: 0 },
-  { id: 'mod-cond-2', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 2, titulo: 'Respeito e Diversidade', descricao: 'Um ambiente inclusivo para todos.', capa_url: null, ordem: 1 },
-  { id: 'mod-cond-3', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 3, titulo: 'Conflitos de Interesse', descricao: 'Como identificar e lidar.', capa_url: null, ordem: 2 },
+  { id: 'mod-cond-1', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 1, titulo: 'Ética e Integridade', descricao: 'Princípios éticos na DG Tech.', capa_url: '/capas/mod-cond-1.jpg', ordem: 0 },
+  { id: 'mod-cond-2', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 2, titulo: 'Respeito e Diversidade', descricao: 'Um ambiente inclusivo para todos.', capa_url: '/capas/mod-cond-2.jpg', ordem: 1 },
+  { id: 'mod-cond-3', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 3, titulo: 'Conflitos de Interesse', descricao: 'Como identificar e lidar.', capa_url: '/capas/mod-cond-3.jpg', ordem: 2 },
 
   // Trilha: Regras da DG (obrigatória)
-  { id: 'mod-regras-1', trilha_id: TRILHA_REGRAS_DG.id, numero: 1, titulo: 'Políticas Gerais', descricao: 'Regras operacionais básicas.', capa_url: null, ordem: 0 },
-  { id: 'mod-regras-2', trilha_id: TRILHA_REGRAS_DG.id, numero: 2, titulo: 'Saúde e Segurança', descricao: 'Regras de proteção no trabalho.', capa_url: null, ordem: 1 },
-  { id: 'mod-regras-3', trilha_id: TRILHA_REGRAS_DG.id, numero: 3, titulo: 'Confidencialidade', descricao: 'Proteção de informações.', capa_url: null, ordem: 2 },
+  { id: 'mod-regras-1', trilha_id: TRILHA_REGRAS_DG.id, numero: 1, titulo: 'Políticas Gerais', descricao: 'Regras operacionais básicas.', capa_url: '/capas/mod-regras-1.jpg', ordem: 0 },
+  { id: 'mod-regras-2', trilha_id: TRILHA_REGRAS_DG.id, numero: 2, titulo: 'Saúde e Segurança', descricao: 'Regras de proteção no trabalho.', capa_url: '/capas/mod-regras-2.jpg', ordem: 1 },
+  { id: 'mod-regras-3', trilha_id: TRILHA_REGRAS_DG.id, numero: 3, titulo: 'Confidencialidade', descricao: 'Proteção de informações.', capa_url: '/capas/mod-regras-3.jpg', ordem: 2 },
 ]
 
 export const AULAS: Aula[] = [

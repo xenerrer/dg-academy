@@ -47,6 +47,15 @@ export function ModuloPoster({ modulo, status, onAbrir }: ModuloPosterProps) {
       <div
         className={cn('absolute inset-0 bg-gradient-to-b', gradientes[(modulo.numero - 1) % 6])}
       />
+      {/* capa do módulo; o gradiente atrás continua sendo o fundo quando não há capa */}
+      {modulo.capa_url && (
+        <img
+          src={modulo.capa_url}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        />
+      )}
       <div className="absolute inset-0 bg-[radial-gradient(50%_38%_at_50%_38%,rgba(255,218,0,0.22),transparent_70%)]" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/35 to-black/85" />
 
