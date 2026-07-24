@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "dist"
+
+[dev]
+  command = "npm run dev"
+  port = 8080
+
+[env]
+  [env.production]
+    VITE_SUPABASE_URL = ""
+    VITE_SUPABASE_ANON_KEY = ""
+    VITE_PANDA_LIBRARY_ID = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
