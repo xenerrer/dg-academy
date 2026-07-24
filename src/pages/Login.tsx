@@ -35,7 +35,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-dg-bg lg:grid lg:grid-cols-[1fr_1.1fr]">
+    <div className="min-h-[100dvh] bg-dg-bg lg:grid lg:grid-cols-[2fr_1fr]">
       <PainelMarca />
 
       <div className="flex items-center justify-center px-6 py-10 lg:px-12">
