@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
+import { entrar } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { PainelMarca } from '@/components/auth/PainelMarca'
 import { FormEntrar } from '@/components/auth/FormEntrar'
@@ -19,7 +21,18 @@ type Aba = 'entrar' | 'cadastro'
  */
 export default function Login() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [aba, setAba] = useState<Aba>('entrar')
+
+  /**
+   * Abre a sessão e só então navega. O invalidate é o que faz o ProtectedRoute
+   * enxergar o usuário — sem ele a rota de destino devolveria para /login.
+   */
+  async function acessar() {
+    await entrar()
+    await queryClient.invalidateQueries({ queryKey: ['usuario'] })
+    navigate('/bem-vindo')
+  }
 
   return (
     <div className="min-h-[100dvh] bg-dg-bg lg:grid lg:grid-cols-[1fr_1.1fr]">
@@ -53,9 +66,9 @@ export default function Login() {
           </p>
 
           {aba === 'entrar' ? (
-            <FormEntrar onEntrar={() => navigate('/bem-vindo')} />
+            <FormEntrar onEntrar={acessar} />
           ) : (
-            <FormCadastro onCadastrar={() => navigate('/bem-vindo')} />
+            <FormCadastro onCadastrar={acessar} />
           )}
 
           <p className="mt-6 text-caption text-dg-muted">

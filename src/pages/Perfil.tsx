@@ -1,8 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
-import { listarConclusoes, listarSetores, obterUsuarioAtual } from '@/lib/api'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
+import { listarConclusoes, listarSetores, obterUsuarioAtual, sair } from '@/lib/api'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function Perfil() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const { data: usuario } = useQuery({ queryKey: ['usuario'], queryFn: obterUsuarioAtual })
   const { data: setores = [] } = useQuery({ queryKey: ['setores'], queryFn: listarSetores })
   const { data: conclusoes = [] } = useQuery({
@@ -10,6 +15,13 @@ export default function Perfil() {
     queryFn: () => listarConclusoes(usuario!.id),
     enabled: !!usuario,
   })
+
+  /** Encerra a sessão e limpa o cache — sem o clear, a próxima tela ainda leria o usuário antigo. */
+  async function encerrarSessao() {
+    await sair()
+    queryClient.clear()
+    navigate('/login')
+  }
 
   if (!usuario) return <div className="p-14 text-dg-muted">Carregando…</div>
 
@@ -39,6 +51,13 @@ export default function Perfil() {
           ))}
         </CardContent>
       </Card>
+
+      <div className="mt-6 flex justify-end">
+        <Button variant="outline" onClick={encerrarSessao}>
+          Sair
+          <LogOut className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   )
 }

@@ -29,13 +29,41 @@ import {
   TRILHA_REGRAS_DG,
   USUARIO_ATUAL,
 } from '@/mocks/dados'
-import type { ConclusaoModulo, NivelExperiencia, StatusModulo, Trilha } from '@/types/database'
+import type {
+  ConclusaoModulo,
+  NivelExperiencia,
+  Profile,
+  StatusModulo,
+  Trilha,
+} from '@/types/database'
 
 /** Simula latência de rede para a interface não parecer instantânea demais. */
 const atraso = <T>(dado: T, ms = 220): Promise<T> =>
   new Promise((resolve) => setTimeout(() => resolve(dado), ms))
 
-export async function obterUsuarioAtual() {
+// ── Sessão ──────────────────────────────────────────────────────────────────
+// A casca não tem Supabase Auth ainda, mas o fluxo precisa começar no login para
+// ser demonstrável. Uma marca em sessionStorage faz as vezes da sessão: por ser
+// sessionStorage (e não localStorage), cada nova aba abre deslogada — que é o
+// comportamento que se quer ao apresentar o produto.
+//
+// Quando o Supabase entrar: entrar() vira supabase.auth.signInWithPassword,
+// sair() vira supabase.auth.signOut e obterUsuarioAtual() lê de auth.getUser().
+// A assinatura das três não muda, então nenhum componente é tocado.
+
+const CHAVE_SESSAO = 'dg-sessao'
+
+export async function entrar() {
+  sessionStorage.setItem(CHAVE_SESSAO, USUARIO_ATUAL.id)
+  return atraso(USUARIO_ATUAL, 320)
+}
+
+export async function sair() {
+  sessionStorage.removeItem(CHAVE_SESSAO)
+}
+
+export async function obterUsuarioAtual(): Promise<Profile | null> {
+  if (!sessionStorage.getItem(CHAVE_SESSAO)) return null
   return atraso(USUARIO_ATUAL)
 }
 
