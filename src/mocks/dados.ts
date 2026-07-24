@@ -38,6 +38,7 @@ export const SETORES: Setor[] = [
   { id: 'setor-campo', tenant_id: TENANT_ID, nome: 'Engenharia de Campo' },
   { id: 'setor-orcamentos', tenant_id: TENANT_ID, nome: 'Orçamentos' },
   { id: 'setor-adm', tenant_id: TENANT_ID, nome: 'Administrativo' },
+  { id: 'setor-fornecedores', tenant_id: TENANT_ID, nome: 'Fornecedores' },
 ]
 
 export const USUARIO_ATUAL: Profile = {
@@ -63,16 +64,61 @@ export const TRILHA: Trilha = {
   ativa: true,
 }
 
+// Trilhas obrigatórias para TODOS (independente do setor)
+export const TRILHA_MISSAO_VISAO_VALORES: Trilha = {
+  id: 'trilha-missao-visao-valores',
+  tenant_id: TENANT_ID,
+  nome: 'Missão, Visão e Valores',
+  descricao: 'Entenda o propósito e os valores que guiam a DG Tech.',
+  ordem: 10,
+  ativa: true,
+}
+
+export const TRILHA_CODIGOS_CONDUTA: Trilha = {
+  id: 'trilha-codigos-conduta',
+  tenant_id: TENANT_ID,
+  nome: 'Códigos de Conduta',
+  descricao: 'Normas e princípios éticos que orientam o comportamento na DG Tech.',
+  ordem: 11,
+  ativa: true,
+}
+
+export const TRILHA_REGRAS_DG: Trilha = {
+  id: 'trilha-regras-dg',
+  tenant_id: TENANT_ID,
+  nome: 'Regras da DG',
+  descricao: 'Políticas e procedimentos operacionais da empresa.',
+  ordem: 12,
+  ativa: true,
+}
+
 export const MODULOS: Modulo[] = [
+  // Trilha: Integração DG Tech
   { id: 'mod-1', trilha_id: TRILHA.id, numero: 1, titulo: 'Boas-vindas à DG', descricao: null, capa_url: null, ordem: 0 },
   { id: 'mod-2', trilha_id: TRILHA.id, numero: 2, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: null, ordem: 1 },
   { id: 'mod-3', trilha_id: TRILHA.id, numero: 3, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: null, ordem: 2 },
   { id: 'mod-4', trilha_id: TRILHA.id, numero: 4, titulo: 'Segurança & EPIs', descricao: null, capa_url: null, ordem: 3 },
   { id: 'mod-5', trilha_id: TRILHA.id, numero: 5, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: null, ordem: 4 },
   { id: 'mod-6', trilha_id: TRILHA.id, numero: 6, titulo: 'Certificação DG Tech', descricao: null, capa_url: null, ordem: 5 },
+
+  // Trilha: Missão, Visão e Valores (obrigatória)
+  { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: null, ordem: 0 },
+  { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: null, ordem: 1 },
+  { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: null, ordem: 2 },
+
+  // Trilha: Códigos de Conduta (obrigatória)
+  { id: 'mod-cond-1', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 1, titulo: 'Ética e Integridade', descricao: 'Princípios éticos na DG Tech.', capa_url: null, ordem: 0 },
+  { id: 'mod-cond-2', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 2, titulo: 'Respeito e Diversidade', descricao: 'Um ambiente inclusivo para todos.', capa_url: null, ordem: 1 },
+  { id: 'mod-cond-3', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 3, titulo: 'Conflitos de Interesse', descricao: 'Como identificar e lidar.', capa_url: null, ordem: 2 },
+
+  // Trilha: Regras da DG (obrigatória)
+  { id: 'mod-regras-1', trilha_id: TRILHA_REGRAS_DG.id, numero: 1, titulo: 'Políticas Gerais', descricao: 'Regras operacionais básicas.', capa_url: null, ordem: 0 },
+  { id: 'mod-regras-2', trilha_id: TRILHA_REGRAS_DG.id, numero: 2, titulo: 'Saúde e Segurança', descricao: 'Regras de proteção no trabalho.', capa_url: null, ordem: 1 },
+  { id: 'mod-regras-3', trilha_id: TRILHA_REGRAS_DG.id, numero: 3, titulo: 'Confidencialidade', descricao: 'Proteção de informações.', capa_url: null, ordem: 2 },
 ]
 
 export const AULAS: Aula[] = [
+  // Trilha: Integração DG Tech
   { id: 'aula-1', modulo_id: 'mod-1', titulo: 'Boas-vindas à DG', descricao: null, panda_video_id: null, duracao_seg: 180, ordem: 0 },
   { id: 'aula-2', modulo_id: 'mod-2', titulo: 'Cultura, Missão & Valores', descricao: null, panda_video_id: null, duracao_seg: 240, ordem: 0 },
   {
@@ -88,6 +134,21 @@ export const AULAS: Aula[] = [
   { id: 'aula-4', modulo_id: 'mod-4', titulo: 'Segurança & EPIs', descricao: null, panda_video_id: null, duracao_seg: 300, ordem: 0 },
   { id: 'aula-5', modulo_id: 'mod-5', titulo: 'Materiais & Ferramentas', descricao: null, panda_video_id: null, duracao_seg: 260, ordem: 0 },
   { id: 'aula-6', modulo_id: 'mod-6', titulo: 'Certificação DG Tech', descricao: null, panda_video_id: null, duracao_seg: 320, ordem: 0 },
+
+  // Trilha: Missão, Visão e Valores (obrigatória)
+  { id: 'aula-mvv-1', modulo_id: 'mod-mvv-1', titulo: 'Nossa Missão', descricao: 'Conheça o propósito que move a DG Tech.', panda_video_id: null, duracao_seg: 240, ordem: 0 },
+  { id: 'aula-mvv-2', modulo_id: 'mod-mvv-2', titulo: 'Nossa Visão', descricao: 'Veja onde queremos chegar como empresa.', panda_video_id: null, duracao_seg: 220, ordem: 0 },
+  { id: 'aula-mvv-3', modulo_id: 'mod-mvv-3', titulo: 'Nossos Valores', descricao: 'Os princípios que guiam todas as nossas decisões.', panda_video_id: null, duracao_seg: 260, ordem: 0 },
+
+  // Trilha: Códigos de Conduta (obrigatória)
+  { id: 'aula-cond-1', modulo_id: 'mod-cond-1', titulo: 'Ética e Integridade', descricao: 'Princípios éticos que devemos manter.', panda_video_id: null, duracao_seg: 280, ordem: 0 },
+  { id: 'aula-cond-2', modulo_id: 'mod-cond-2', titulo: 'Respeito e Diversidade', descricao: 'Construindo um ambiente inclusivo.', panda_video_id: null, duracao_seg: 250, ordem: 0 },
+  { id: 'aula-cond-3', modulo_id: 'mod-cond-3', titulo: 'Conflitos de Interesse', descricao: 'Como identificar e reportar conflitos.', panda_video_id: null, duracao_seg: 200, ordem: 0 },
+
+  // Trilha: Regras da DG (obrigatória)
+  { id: 'aula-regras-1', modulo_id: 'mod-regras-1', titulo: 'Políticas Gerais', descricao: 'Regras operacionais e administrativas.', panda_video_id: null, duracao_seg: 300, ordem: 0 },
+  { id: 'aula-regras-2', modulo_id: 'mod-regras-2', titulo: 'Saúde e Segurança', descricao: 'Protegendo nossos colaboradores.', panda_video_id: null, duracao_seg: 320, ordem: 0 },
+  { id: 'aula-regras-3', modulo_id: 'mod-regras-3', titulo: 'Confidencialidade', descricao: 'Protegendo informações sensíveis.', panda_video_id: null, duracao_seg: 280, ordem: 0 },
 ]
 
 /** Questões do protótipo. As definitivas vêm do Danilo (prometidas seg/ter). */

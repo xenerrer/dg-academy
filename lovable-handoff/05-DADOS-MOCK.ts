@@ -36,6 +36,7 @@ export const SETORES: Setor[] = [
   { id: 'setor-campo', tenant_id: TENANT_ID, nome: 'Engenharia de Campo' },
   { id: 'setor-orcamentos', tenant_id: TENANT_ID, nome: 'Orçamentos' },
   { id: 'setor-adm', tenant_id: TENANT_ID, nome: 'Administrativo' },
+  { id: 'setor-fornecedores', tenant_id: TENANT_ID, nome: 'Fornecedores' },
 ]
 
 // ============================================================
