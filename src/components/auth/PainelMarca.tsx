@@ -27,8 +27,8 @@ export function PainelMarca() {
       <div className="relative hidden lg:block">
         <p className="dg-eyebrow mb-4">Plataforma de integração e treinamentos</p>
         <h2 className="max-w-sm font-display text-heading font-bold leading-tight">
-          O onboarding que <span className="text-dg-yellow">energiza</span> sua equipe desde o
-          primeiro dia.
+          O onboarding que <span className="text-dg-yellow">energiza</span> a nossa equipe desde
+          o primeiro dia.
         </h2>
         <p className="mt-4 max-w-xs text-label text-dg-muted">
           Assista, responda, evolua. Cada colaborador vê a trilha do seu setor.
