@@ -1,7 +1,8 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { listarConclusoes, obterUsuarioAtual } from '@/lib/api'
 import { AppNav } from '@/components/AppNav'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
 import Trilha from '@/pages/Trilha'
 import Aula from '@/pages/Aula'
 import Login from '@/pages/Login'
@@ -42,15 +43,21 @@ export default function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
+            {/* Página pública */}
             <Route path="/login" element={<Login />} />
-            <Route path="/bem-vindo" element={<Onboarding />} />
-            <Route path="/mapa" element={<Mapa />} />
-            <Route path="/" element={<Trilha />} />
-            <Route path="/aula/:moduloId" element={<Aula />} />
-            <Route path="/perfil" element={<Perfil />} />
-            <Route path="/gestao" element={<GestaoPainel />} />
-            <Route path="/gestao/colaboradores" element={<GestaoColaboradores />} />
-            <Route path="/admin/conteudo" element={<AdminConteudo />} />
+
+            {/* Rotas protegidas — redirecionam para login se não autenticado */}
+            <Route path="/" element={<ProtectedRoute><Trilha /></ProtectedRoute>} />
+            <Route path="/bem-vindo" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
+            <Route path="/mapa" element={<ProtectedRoute><Mapa /></ProtectedRoute>} />
+            <Route path="/aula/:moduloId" element={<ProtectedRoute><Aula /></ProtectedRoute>} />
+            <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
+            <Route path="/gestao" element={<ProtectedRoute><GestaoPainel /></ProtectedRoute>} />
+            <Route path="/gestao/colaboradores" element={<ProtectedRoute><GestaoColaboradores /></ProtectedRoute>} />
+            <Route path="/admin/conteudo" element={<ProtectedRoute><AdminConteudo /></ProtectedRoute>} />
+
+            {/* Rota padrão — redireciona para login */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Layout>
       </BrowserRouter>
