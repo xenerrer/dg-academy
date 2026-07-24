@@ -48,7 +48,7 @@ export async function obterTrilha() {
  * - 3 trilhas obrigatórias (Missão/Visão/Valores, Códigos, Regras)
  * - A trilha de integração (por setor do usuário, ou geral)
  */
-export async function listarTrilhasDoUsuario(usuario = USUARIO_ATUAL): Promise<Trilha[]> {
+export async function listarTrilhasDoUsuario(): Promise<Trilha[]> {
   const trilhas: Trilha[] = [
     TRILHA_MISSAO_VISAO_VALORES,
     TRILHA_CODIGOS_CONDUTA,

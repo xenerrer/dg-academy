@@ -62,7 +62,6 @@ export const TRILHA: Trilha = {
   descricao: 'A jornada de entrada de todo colaborador da DG.',
   ordem: 0,
   ativa: true,
-  capa_url: '/capas/trilha-integracao.jpg',
 }
 
 // Trilhas obrigatórias para TODOS (independente do setor)
@@ -73,7 +72,6 @@ export const TRILHA_MISSAO_VISAO_VALORES: Trilha = {
   descricao: 'Entenda o propósito e os valores que guiam a DG Tech.',
   ordem: 10,
   ativa: true,
-  capa_url: '/capas/trilha-mvv.jpg',
 }
 
 export const TRILHA_CODIGOS_CONDUTA: Trilha = {
@@ -83,7 +81,6 @@ export const TRILHA_CODIGOS_CONDUTA: Trilha = {
   descricao: 'Normas e princípios éticos que orientam o comportamento na DG Tech.',
   ordem: 11,
   ativa: true,
-  capa_url: '/capas/trilha-conduta.jpg',
 }
 
 export const TRILHA_REGRAS_DG: Trilha = {
@@ -93,7 +90,6 @@ export const TRILHA_REGRAS_DG: Trilha = {
   descricao: 'Políticas e procedimentos operacionais da empresa.',
   ordem: 12,
   ativa: true,
-  capa_url: '/capas/trilha-regras.jpg',
 }
 
 export const MODULOS: Modulo[] = [
