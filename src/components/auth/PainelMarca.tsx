@@ -25,7 +25,7 @@ export function PainelMarca() {
       </div>
 
       <div className="relative hidden lg:block">
-        <p className="font-display text-heading font-bold tracking-tight">
+        <p className="font-display text-hero font-bold tracking-tight">
           <span className="text-dg-yellow">DG</span>TECH{' '}
           <span className="text-dg-yellow">/</span>Academy
         </p>

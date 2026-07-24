@@ -58,6 +58,8 @@ export default {
         title: ['21px', { lineHeight: '1.2' }],
         heading: ['26px', { lineHeight: '1.15' }],
         display: ['30px', { lineHeight: '1.05' }],
+        /** Wordmark de tela cheia (painel de login) — não usar em corpo de texto. */
+        hero: ['78px', { lineHeight: '0.95' }],
       },
       /**
        * Raios SEMÂNTICOS (nomes novos, não colidem com rounded-lg/2xl do
