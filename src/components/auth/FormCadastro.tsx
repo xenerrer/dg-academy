@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check, HardHat, Calculator, Building2, UserPlus } from 'lucide-react'
+import { Check, HardHat, Calculator, Building2, Truck, UserPlus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,28 +11,46 @@ import { Input } from '@/components/ui/input'
  * pedido do Danilo: "o João é engenheiro de campo, o José é orçamentista" —
  * cada um vê a trilha do seu setor.
  *
- * Ao escolher um setor, a prévia mostra os treinamentos daquela área. Conteúdo
- * ilustrativo — a lista real vem do que o RH cadastrar por setor.
+ * Ao escolher um setor, a prévia separa o que TODO mundo recebe do que é
+ * específico daquela área. Conteúdo ilustrativo — a lista real vem do que o RH
+ * cadastrar por setor.
  */
+
+/**
+ * Trilhas que toda pessoa recebe, qualquer que seja o setor. No banco são as
+ * trilhas sem vínculo em trilha_setores — por isso ficam visíveis a todos.
+ */
+const TRILHAS_PADRAO = [
+  'Integração DG',
+  'Missão, visão e valores',
+  'Códigos de conduta',
+  'Regras da DG',
+]
 
 const SETORES = [
   {
     id: 'campo',
     nome: 'Engenharia de Campo',
     icone: HardHat,
-    treinamentos: ['Integração DG', 'NR-10 — Segurança em eletricidade', 'EPIs e procedimentos de obra', 'Ferramentas e instalações'],
+    treinamentos: ['NR-10 — Segurança em eletricidade', 'EPIs e procedimentos de obra', 'Ferramentas e instalações'],
   },
   {
     id: 'orcamentos',
     nome: 'Orçamentos',
     icone: Calculator,
-    treinamentos: ['Integração DG', 'Levantamento e composição de custos', 'Normas técnicas aplicadas a orçamento', 'Relacionamento com o cliente'],
+    treinamentos: ['Levantamento e composição de custos', 'Normas técnicas aplicadas a orçamento', 'Relacionamento com o cliente'],
   },
   {
     id: 'adm',
     nome: 'Administrativo',
     icone: Building2,
-    treinamentos: ['Integração DG', 'Processos internos e sistemas', 'Atendimento e comunicação', 'Código de conduta'],
+    treinamentos: ['Processos internos e sistemas', 'Atendimento e comunicação'],
+  },
+  {
+    id: 'fornecedores',
+    nome: 'Fornecedores',
+    icone: Truck,
+    treinamentos: ['Homologação e documentação', 'Padrões de qualidade e entrega', 'Segurança no acesso às obras'],
   },
 ]
 
@@ -65,7 +83,7 @@ export function FormCadastro({ onCadastrar }: { onCadastrar: () => void }) {
 
       <div>
         <span className="mb-2 block text-label text-dg-muted">Setor — define a trilha que a pessoa recebe</span>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2">
           {SETORES.map((s) => {
             const Icone = s.icone
             const ativo = setorId === s.id
@@ -100,8 +118,24 @@ export function FormCadastro({ onCadastrar }: { onCadastrar: () => void }) {
           transition={{ duration: 0.25, ease: [0.2, 0.7, 0.2, 1] }}
           className="rounded-control border border-dg-yellow/20 bg-dg-yellow/[0.04] p-4"
         >
-          <p className="mb-2 font-mono text-eyebrow uppercase tracking-[0.2em] text-dg-yellow">
+          <p className="mb-3 font-mono text-eyebrow uppercase tracking-[0.2em] text-dg-yellow">
             Com esse acesso, a pessoa verá
+          </p>
+
+          <p className="mb-1.5 font-mono text-eyebrow uppercase tracking-[0.16em] text-dg-muted">
+            Padrão para todos
+          </p>
+          <ul className="mb-3 space-y-1.5">
+            {TRILHAS_PADRAO.map((t) => (
+              <li key={t} className="flex items-center gap-2 text-label text-dg-text">
+                <Check className="h-3.5 w-3.5 shrink-0 text-dg-success" strokeWidth={3} />
+                {t}
+              </li>
+            ))}
+          </ul>
+
+          <p className="mb-1.5 border-t border-dg-yellow/15 pt-3 font-mono text-eyebrow uppercase tracking-[0.16em] text-dg-muted">
+            Do setor — {setor.nome}
           </p>
           <ul className="space-y-1.5">
             {setor.treinamentos.map((t) => (
