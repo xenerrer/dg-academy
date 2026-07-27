@@ -9,7 +9,6 @@ interface PassoCrachaProps {
   fotoUrl: string | null
   onFoto: (dataUrl: string) => void
   onAvancar: () => void
-  onPular: () => void
 }
 
 /**
@@ -23,7 +22,7 @@ interface PassoCrachaProps {
  * O anel respira enquanto está vazio (chama o toque) e acende girando quando a
  * foto entra. A foto é o dado que mais personaliza por menos esforço.
  */
-export function PassoCracha({ nome, fotoUrl, onFoto, onAvancar, onPular }: PassoCrachaProps) {
+export function PassoCracha({ nome, fotoUrl, onFoto, onAvancar }: PassoCrachaProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   function aoEscolher(evento: React.ChangeEvent<HTMLInputElement>) {
@@ -49,12 +48,14 @@ export function PassoCracha({ nome, fotoUrl, onFoto, onAvancar, onPular }: Passo
             {fotoUrl ? 'Continuar' : 'Tirar foto'}
             {!fotoUrl && <Camera className="h-4 w-4" />}
           </Button>
-          <button
-            onClick={fotoUrl ? () => inputRef.current?.click() : onPular}
-            className="h-11 w-full text-[12.5px] text-dg-muted underline-offset-4 hover:text-dg-yellow hover:underline"
-          >
-            {fotoUrl ? 'Trocar foto' : 'Depois eu coloco'}
-          </button>
+          {fotoUrl && (
+            <button
+              onClick={() => inputRef.current?.click()}
+              className="h-11 w-full text-[12.5px] text-dg-muted underline-offset-4 hover:text-dg-yellow hover:underline"
+            >
+              Trocar foto
+            </button>
+          )}
         </>
       }
     >

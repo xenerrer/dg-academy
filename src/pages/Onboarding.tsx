@@ -47,7 +47,6 @@ export default function Onboarding() {
         fotoUrl={fotoUrl}
         onFoto={setFotoUrl}
         onAvancar={() => setPasso(1)}
-        onPular={() => setPasso(1)}
       />
     )
   }

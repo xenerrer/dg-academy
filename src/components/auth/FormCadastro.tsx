@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check, HardHat, Calculator, Building2, Truck, UserPlus } from 'lucide-react'
+import { Check, HardHat, Calculator, Building2, UserPlus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -45,12 +45,6 @@ const SETORES = [
     nome: 'Administrativo',
     icone: Building2,
     treinamentos: ['Processos internos e sistemas', 'Atendimento e comunicação'],
-  },
-  {
-    id: 'fornecedores',
-    nome: 'Fornecedores',
-    icone: Truck,
-    treinamentos: ['Homologação e documentação', 'Padrões de qualidade e entrega', 'Segurança no acesso às obras'],
   },
 ]
 
