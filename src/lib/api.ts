@@ -18,6 +18,7 @@
 import {
   AULAS,
   COLABORADORES,
+  COMENTARIOS,
   CONCLUSOES,
   MODULOS,
   PROGRESSO,
@@ -30,6 +31,7 @@ import {
   USUARIO_ATUAL,
 } from '@/mocks/dados'
 import type {
+  Comentario,
   ConclusaoModulo,
   NivelExperiencia,
   Profile,
@@ -219,4 +221,53 @@ export async function concluirModulo(dados: {
   } catch {
     // storage indisponível — a conclusão só não sobrevive ao reload
   }
+}
+
+// ── Comentários (overlay de sessão) ─────────────────────────────────────────
+// Mesmo padrão das conclusões: comentário novo fica em sessionStorage e é
+// mesclado ao seed do mock. Quando o Supabase entrar, criarComentario vira um
+// INSERT em comentarios e listarComentarios um SELECT ordenado por criado_em —
+// este overlay inteiro é apagado, sem tocar em componente.
+
+const CHAVE_COMENTARIOS_SESSAO = 'dg-comentarios-sessao'
+
+function lerComentariosDaSessao(): Comentario[] {
+  try {
+    const dado = JSON.parse(sessionStorage.getItem(CHAVE_COMENTARIOS_SESSAO) ?? '[]')
+    return Array.isArray(dado) ? dado : []
+  } catch {
+    return []
+  }
+}
+
+export async function listarComentarios(aulaId: string): Promise<Comentario[]> {
+  const doMock = COMENTARIOS.filter((c) => c.aula_id === aulaId)
+  const daSessao = lerComentariosDaSessao().filter((c) => c.aula_id === aulaId)
+  return atraso(
+    [...doMock, ...daSessao].sort(
+      (a, b) => new Date(a.criado_em).getTime() - new Date(b.criado_em).getTime(),
+    ),
+  )
+}
+
+export async function criarComentario(dados: { aula_id: string; texto: string }): Promise<Comentario> {
+  const novo: Comentario = {
+    id: `sessao-com-${Date.now()}`,
+    tenant_id: USUARIO_ATUAL.tenant_id,
+    aula_id: dados.aula_id,
+    user_id: USUARIO_ATUAL.id,
+    parent_id: null,
+    texto: dados.texto,
+    criado_em: new Date().toISOString(),
+  }
+
+  const existentes = lerComentariosDaSessao()
+  existentes.push(novo)
+  try {
+    sessionStorage.setItem(CHAVE_COMENTARIOS_SESSAO, JSON.stringify(existentes))
+  } catch {
+    // storage indisponível — o comentário só não sobrevive ao reload
+  }
+
+  return atraso(novo, 300)
 }

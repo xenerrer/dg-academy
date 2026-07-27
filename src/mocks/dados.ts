@@ -12,6 +12,7 @@
 
 import type {
   Aula,
+  Comentario,
   ConclusaoModulo,
   Modulo,
   Profile,
@@ -199,6 +200,316 @@ export const QUESTOES: Questao[] = [
     pontos: 30,
     ordem: 2,
   },
+
+  // Módulo 1 — Boas-vindas à DG
+  {
+    id: 'q-mod1-1', modulo_id: 'mod-1', ordem: 0, pontos: 30,
+    enunciado: 'O que a DG Academy espera do colaborador na fase de integração?',
+    alternativas: ['Decorar o organograma completo', 'Assistir aos módulos e entender a cultura da empresa', 'Preencher formulários de RH apenas', 'Nada, é só uma formalidade'],
+    indice_correto: 1,
+    feedback: 'A integração existe pra você chegar alinhado com a cultura DG antes de ir pro dia a dia.',
+  },
+  {
+    id: 'q-mod1-2', modulo_id: 'mod-1', ordem: 1, pontos: 30,
+    enunciado: 'Por que a DG Tech tem uma trilha de integração antes do colaborador começar a trabalhar?',
+    alternativas: ['Para atrasar o início das atividades', 'Para garantir que todos comecem com a mesma base de cultura e segurança', 'Porque é exigência legal', 'Não há motivo específico'],
+    indice_correto: 1,
+    feedback: 'Todo mundo começa alinhado — cultura, segurança e conduta, do mesmo jeito.',
+  },
+  {
+    id: 'q-mod1-3', modulo_id: 'mod-1', ordem: 2, pontos: 30,
+    enunciado: 'Quem acompanha o seu progresso na trilha de integração?',
+    alternativas: ['Ninguém, é só pra você', 'A gestão, em tempo real, pelo painel', 'Só o Panda Video', 'Um professor externo'],
+    indice_correto: 1,
+    feedback: 'O gestor vê seu progresso real assim que você avança — é assim que a DG acompanha quem está estudando de verdade.',
+  },
+
+  // Módulo 2 — Cultura, Missão & Valores
+  {
+    id: 'q-mod2-1', modulo_id: 'mod-2', ordem: 0, pontos: 30,
+    enunciado: '"Cultura, Missão & Valores" nesta trilha existe para quê?',
+    alternativas: ['Para decorar frases de efeito', 'Para você entender como a DG pensa e decide no dia a dia', 'Para preencher tempo do onboarding', 'Não tem função prática'],
+    indice_correto: 1,
+    feedback: 'Cultura não é discurso — é o que orienta decisão quando não tem manual pra situação.',
+  },
+  {
+    id: 'q-mod2-2', modulo_id: 'mod-2', ordem: 1, pontos: 30,
+    enunciado: 'Como a cultura DG se manifesta na prática?',
+    alternativas: ['Só em cartazes na parede', 'Nas escolhas do dia a dia, mesmo sem ninguém observando', 'Só em reuniões formais', 'Não se aplica ao trabalho de campo'],
+    indice_correto: 1,
+    feedback: 'Cultura é o que a pessoa faz quando ninguém está olhando — não o que ela diz que faz.',
+  },
+  {
+    id: 'q-mod2-3', modulo_id: 'mod-2', ordem: 2, pontos: 30,
+    enunciado: 'O que conecta a cultura da DG ao trabalho de cada colaborador?',
+    alternativas: ['Nada, são coisas separadas', 'As decisões técnicas seguem os mesmos valores da empresa', 'Só a diretoria segue a cultura', 'A cultura só vale para o escritório'],
+    indice_correto: 1,
+    feedback: 'Do canteiro de obra ao escritório, a mesma cultura orienta a decisão.',
+  },
+
+  // Módulo 4 — Segurança & EPIs
+  {
+    id: 'q-mod4-1', modulo_id: 'mod-4', ordem: 0, pontos: 30,
+    enunciado: 'Antes de iniciar qualquer atividade em campo, o que é obrigatório?',
+    alternativas: ['Usar os EPIs adequados à atividade', 'Avaliar se realmente precisa', 'Perguntar ao cliente se é necessário', 'Usar só se o supervisor estiver por perto'],
+    indice_correto: 0,
+    feedback: 'EPI não é opcional e não depende de quem está olhando.',
+  },
+  {
+    id: 'q-mod4-2', modulo_id: 'mod-4', ordem: 1, pontos: 30,
+    enunciado: 'Um colega esquece o EPI numa atividade rápida. Qual a conduta correta?',
+    alternativas: ['Deixar passar, é rápido mesmo', 'Impedir o início da atividade até o EPI estar correto', 'Avisar só se acontecer de novo', 'Não é problema seu'],
+    indice_correto: 1,
+    feedback: 'Segurança não se negocia por "vai ser rápido" — não inicia sem o EPI certo.',
+  },
+  {
+    id: 'q-mod4-3', modulo_id: 'mod-4', ordem: 2, pontos: 30,
+    enunciado: 'Por que a DG trata segurança como inegociável?',
+    alternativas: ['Por exigência apenas de auditoria', 'Porque vidas e integridade física estão em jogo em cada obra', 'Porque encarece o seguro', 'Não é tão crítico assim'],
+    indice_correto: 1,
+    feedback: 'Procedimento de segurança existe porque a consequência de ignorá-lo é irreversível.',
+  },
+
+  // Módulo 5 — Materiais & Ferramentas
+  {
+    id: 'q-mod5-1', modulo_id: 'mod-5', ordem: 0, pontos: 30,
+    enunciado: 'Antes de usar uma ferramenta elétrica em campo, o que se deve verificar?',
+    alternativas: ['Só se ela liga', 'Estado de conservação, isolamento e adequação à tarefa', 'Se está com a cor da empresa', 'Nada, ferramenta é ferramenta'],
+    indice_correto: 1,
+    feedback: 'Ferramenta com isolamento comprometido vira risco, não solução.',
+  },
+  {
+    id: 'q-mod5-2', modulo_id: 'mod-5', ordem: 1, pontos: 30,
+    enunciado: 'O que fazer ao identificar uma ferramenta ou material danificado?',
+    alternativas: ['Usar mesmo assim se não tiver outra', 'Reportar e retirar de uso até a substituição', 'Emprestar pra outra equipe', 'Guardar sem avisar ninguém'],
+    indice_correto: 1,
+    feedback: 'Material danificado sai de circulação — reportar é parte do procedimento, não exceção.',
+  },
+  {
+    id: 'q-mod5-3', modulo_id: 'mod-5', ordem: 2, pontos: 30,
+    enunciado: 'Como a DG trata o controle de materiais e ferramentas nas obras?',
+    alternativas: ['Sem controle, cada um se vira', 'Com padrão de conferência e registro por instalação', 'Só o almoxarifado se importa com isso', 'É responsabilidade só do cliente'],
+    indice_correto: 1,
+    feedback: 'Padrão de conferência existe pra garantir qualidade e segurança em toda instalação.',
+  },
+
+  // Módulo 6 — Certificação DG Tech
+  {
+    id: 'q-mod6-1', modulo_id: 'mod-6', ordem: 0, pontos: 30,
+    enunciado: 'O que representa a certificação ao final da trilha de integração?',
+    alternativas: ['Um diploma decorativo', 'A confirmação de que você concluiu e entendeu o conteúdo essencial da DG', 'Só um requisito de RH', 'Nada muda com ela'],
+    indice_correto: 1,
+    feedback: 'A certificação é o marco de que a base está formada — segurança, conduta e cultura.',
+  },
+  {
+    id: 'q-mod6-2', modulo_id: 'mod-6', ordem: 1, pontos: 30,
+    enunciado: 'Depois de certificado, o que muda na sua jornada na DG Academy?',
+    alternativas: ['Nada, o conteúdo acaba ali', 'Novas trilhas por setor e treinamentos seguem liberados', 'Você perde acesso à plataforma', 'A certificação expira em 1 dia'],
+    indice_correto: 1,
+    feedback: 'A integração é a base — o setor te leva pras trilhas específicas da sua função.',
+  },
+  {
+    id: 'q-mod6-3', modulo_id: 'mod-6', ordem: 2, pontos: 30,
+    enunciado: 'Quem tem acesso ao seu resultado de certificação?',
+    alternativas: ['Só você', 'Você e a gestão, pelo painel de acompanhamento', 'Ninguém, fica só no seu dispositivo', 'Só o admin do sistema'],
+    indice_correto: 1,
+    feedback: 'É exatamente esse dado que o gestor usa pra saber quem concluiu de verdade.',
+  },
+
+  // Trilha Missão, Visão e Valores
+  {
+    id: 'q-mvv1-1', modulo_id: 'mod-mvv-1', ordem: 0, pontos: 30,
+    enunciado: 'Uma missão de empresa serve principalmente para quê?',
+    alternativas: ['Decorar o site institucional', 'Explicar o propósito que orienta as decisões da empresa', 'Substituir metas comerciais', 'Não tem uso prático'],
+    indice_correto: 1,
+    feedback: 'A missão é o porquê por trás de cada decisão — não um slogan.',
+  },
+  {
+    id: 'q-mvv1-2', modulo_id: 'mod-mvv-1', ordem: 1, pontos: 30,
+    enunciado: 'Como a missão da DG Tech se conecta ao trabalho do dia a dia?',
+    alternativas: ['Não se conecta, é só institucional', 'Orienta prioridades e decisões técnicas em cada projeto', 'Só vale pra diretoria', 'É revisada a cada trimestre sem impacto prático'],
+    indice_correto: 1,
+    feedback: 'O propósito da empresa aparece nas escolhas técnicas de cada obra, não só no discurso.',
+  },
+  {
+    id: 'q-mvv1-3', modulo_id: 'mod-mvv-1', ordem: 2, pontos: 30,
+    enunciado: 'Por que é importante conhecer a missão da empresa que você atende?',
+    alternativas: ['Não é importante', 'Ajuda a entender o porquê das prioridades e decisões', 'É só currículo', 'Serve só pra entrevista de emprego'],
+    indice_correto: 1,
+    feedback: 'Entender o propósito ajuda a tomar decisão certa quando a regra não cobre a situação.',
+  },
+  {
+    id: 'q-mvv2-1', modulo_id: 'mod-mvv-2', ordem: 0, pontos: 30,
+    enunciado: 'O que é a "visão" de uma empresa?',
+    alternativas: ['A opinião pessoal do fundador', 'Onde a empresa quer chegar no futuro', 'O balanço financeiro anual', 'Um departamento específico'],
+    indice_correto: 1,
+    feedback: 'Visão é a direção de longo prazo — pra onde a empresa está caminhando.',
+  },
+  {
+    id: 'q-mvv2-2', modulo_id: 'mod-mvv-2', ordem: 1, pontos: 30,
+    enunciado: 'Qual o papel do colaborador na visão de futuro da empresa?',
+    alternativas: ['Nenhum, isso é só da diretoria', 'Contribuir com seu trabalho diário para essa direção', 'Só concordar em reunião', 'Repetir a visão de cor'],
+    indice_correto: 1,
+    feedback: 'Cada entrega bem feita empurra a empresa na direção que ela definiu pra si.',
+  },
+  {
+    id: 'q-mvv2-3', modulo_id: 'mod-mvv-2', ordem: 2, pontos: 30,
+    enunciado: 'Por que a visão da empresa é revisitada com os colaboradores?',
+    alternativas: ['Só por formalidade', 'Para manter todos alinhados com a direção de longo prazo', 'Porque muda toda semana', 'Não é revisitada'],
+    indice_correto: 1,
+    feedback: 'Alinhamento de visão evita que cada área puxe pra um lado diferente.',
+  },
+  {
+    id: 'q-mvv3-1', modulo_id: 'mod-mvv-3', ordem: 0, pontos: 30,
+    enunciado: 'Valores de uma empresa funcionam como quê?',
+    alternativas: ['Regras que só valem em crise', 'Princípios que orientam decisão em qualquer situação', 'Um documento arquivado no RH', 'Frases motivacionais sem aplicação prática'],
+    indice_correto: 1,
+    feedback: 'Valor de verdade é o que decide quando ninguém está checando.',
+  },
+  {
+    id: 'q-mvv3-2', modulo_id: 'mod-mvv-3', ordem: 1, pontos: 30,
+    enunciado: 'Um valor da empresa entra em conflito com uma meta de prazo. O que prevalece?',
+    alternativas: ['O prazo, sempre', 'O valor — meta não justifica romper princípio', 'Depende de quem está cobrando', 'Nenhum dos dois importa'],
+    indice_correto: 1,
+    feedback: 'Valor que só vale quando é conveniente não é valor — é discurso.',
+  },
+  {
+    id: 'q-mvv3-3', modulo_id: 'mod-mvv-3', ordem: 2, pontos: 30,
+    enunciado: 'Como os valores da DG aparecem no relacionamento com o cliente?',
+    alternativas: ['Não aparecem, é só interno', 'Na transparência e compromisso em cada entrega', 'Só em contrato assinado', 'Só quando o cliente reclama'],
+    indice_correto: 1,
+    feedback: 'O valor se prova na entrega e na relação, não só no papel.',
+  },
+
+  // Trilha Códigos de Conduta
+  {
+    id: 'q-cond1-1', modulo_id: 'mod-cond-1', ordem: 0, pontos: 30,
+    enunciado: 'O que significa agir com integridade no trabalho?',
+    alternativas: ['Fazer o que for mais rápido', 'Manter a mesma conduta estando alguém observando ou não', 'Seguir a regra só quando é fiscalizado', 'Só ser honesto com o chefe'],
+    indice_correto: 1,
+    feedback: 'Integridade é consistência — a mesma conduta com ou sem plateia.',
+  },
+  {
+    id: 'q-cond1-2', modulo_id: 'mod-cond-1', ordem: 1, pontos: 30,
+    enunciado: 'Um colega sugere burlar uma regra "só dessa vez". Qual a atitude ética?',
+    alternativas: ['Aceitar, se ninguém for saber', 'Recusar e seguir o procedimento correto', 'Fazer só se o colega insistir', 'Avisar depois, se der problema'],
+    indice_correto: 1,
+    feedback: '"Só dessa vez" é como toda quebra de conduta começa — a resposta certa é recusar.',
+  },
+  {
+    id: 'q-cond1-3', modulo_id: 'mod-cond-1', ordem: 2, pontos: 30,
+    enunciado: 'Por que ética e integridade importam tanto quanto entrega técnica?',
+    alternativas: ['Não importam, só a entrega conta', 'Porque sustentam a confiança que permite o negócio existir', 'É só discurso corporativo', 'Só importa pra quem trabalha com cliente direto'],
+    indice_correto: 1,
+    feedback: 'Sem confiança não tem contrato, não tem obra, não tem empresa — integridade sustenta tudo isso.',
+  },
+  {
+    id: 'q-cond2-1', modulo_id: 'mod-cond-2', ordem: 0, pontos: 30,
+    enunciado: 'Qual conduta reflete respeito no ambiente de trabalho DG?',
+    alternativas: ['Tratar diferente conforme o cargo da pessoa', 'Tratar todos com cordialidade e profissionalismo, sem exceção', 'Ser educado só com quem manda', 'Respeito é opcional em campo'],
+    indice_correto: 1,
+    feedback: 'Respeito não muda conforme hierarquia ou situação — é constante.',
+  },
+  {
+    id: 'q-cond2-2', modulo_id: 'mod-cond-2', ordem: 1, pontos: 30,
+    enunciado: 'Você presencia um comentário discriminatório entre colegas. O que fazer?',
+    alternativas: ['Ignorar, não é da sua conta', 'Não compactuar e reportar pelos canais adequados', 'Rir também, pra não criar clima ruim', 'Só comentar depois com outros colegas'],
+    indice_correto: 1,
+    feedback: 'Silêncio compactua. Reportar pelos canais certos é a conduta esperada.',
+  },
+  {
+    id: 'q-cond2-3', modulo_id: 'mod-cond-2', ordem: 2, pontos: 30,
+    enunciado: 'Por que um ambiente diverso e respeitoso importa para a DG?',
+    alternativas: ['Só por exigência legal', 'Porque times diversos e respeitados entregam melhor e retêm talento', 'Não faz diferença no resultado', 'É só uma tendência passageira'],
+    indice_correto: 1,
+    feedback: 'Respeito e diversidade não são só valor — são vantagem real de time.',
+  },
+  {
+    id: 'q-cond3-1', modulo_id: 'mod-cond-3', ordem: 0, pontos: 30,
+    enunciado: 'O que caracteriza um conflito de interesse?',
+    alternativas: ['Discordar de uma decisão do gestor', 'Uma situação em que interesse pessoal pode influenciar decisão profissional', 'Ter uma opinião forte sobre um projeto', 'Qualquer desentendimento entre colegas'],
+    indice_correto: 1,
+    feedback: 'Conflito de interesse é quando o pessoal pode torcer o profissional — daí a necessidade de declarar.',
+  },
+  {
+    id: 'q-cond3-2', modulo_id: 'mod-cond-3', ordem: 1, pontos: 30,
+    enunciado: 'Você percebe que pode se beneficiar pessoalmente de uma decisão que precisa tomar no trabalho. O que fazer?',
+    alternativas: ['Decidir e não comentar com ninguém', 'Declarar a situação e afastar-se da decisão', 'Decidir a seu favor, discretamente', 'Pedir a um amigo pra decidir por você informalmente'],
+    indice_correto: 1,
+    feedback: 'Transparência primeiro: declarar o conflito protege você e a empresa.',
+  },
+  {
+    id: 'q-cond3-3', modulo_id: 'mod-cond-3', ordem: 2, pontos: 30,
+    enunciado: 'Por que a DG trata conflito de interesse como tema formal de conduta?',
+    alternativas: ['Para burocratizar decisões simples', 'Porque decisões enviesadas corroem a confiança e a qualidade da entrega', 'Não é um tema relevante no dia a dia', 'Só se aplica a cargos de diretoria'],
+    indice_correto: 1,
+    feedback: 'Decisão enviesada por interesse pessoal é o tipo de risco que corrói a confiança de dentro pra fora.',
+  },
+
+  // Trilha Regras da DG
+  {
+    id: 'q-regras1-1', modulo_id: 'mod-regras-1', ordem: 0, pontos: 30,
+    enunciado: 'Para que servem as políticas gerais da DG Tech?',
+    alternativas: ['Burocratizar o trabalho sem necessidade', 'Padronizar processos e reduzir ambiguidade nas decisões do dia a dia', 'Substituir o bom senso completamente', 'Só existem no papel, sem uso prático'],
+    indice_correto: 1,
+    feedback: 'Política clara existe pra ninguém precisar reinventar a resposta certa toda vez.',
+  },
+  {
+    id: 'q-regras1-2', modulo_id: 'mod-regras-1', ordem: 1, pontos: 30,
+    enunciado: 'Ao encontrar uma situação que a política não cobre claramente, o que fazer?',
+    alternativas: ['Decidir sozinho e não informar ninguém', 'Buscar orientação do gestor e registrar a decisão tomada', 'Ignorar a situação', 'Aplicar a regra mais rígida que lembrar, sem checar'],
+    indice_correto: 1,
+    feedback: 'Situação nova pede orientação e registro — não decisão isolada e silenciosa.',
+  },
+  {
+    id: 'q-regras1-3', modulo_id: 'mod-regras-1', ordem: 2, pontos: 30,
+    enunciado: 'Políticas da empresa podem ser ignoradas quando há urgência?',
+    alternativas: ['Sim, sempre que houver pressa', 'Não — urgência pede comunicação rápida, não quebra de política', 'Depende de quem está pedindo', 'Só o gestor pode decidir isso na hora'],
+    indice_correto: 1,
+    feedback: 'Urgência não é licença pra pular processo — é motivo pra comunicar rápido e seguir o caminho certo.',
+  },
+  {
+    id: 'q-regras2-1', modulo_id: 'mod-regras-2', ordem: 0, pontos: 30,
+    enunciado: 'Qual é a prioridade número um em qualquer atividade da DG?',
+    alternativas: ['Cumprir o prazo', 'A saúde e segurança de quem está envolvido na atividade', 'A satisfação imediata do cliente', 'O menor custo possível'],
+    indice_correto: 1,
+    feedback: 'Nenhum prazo ou custo justifica colocar saúde ou segurança em segundo plano.',
+  },
+  {
+    id: 'q-regras2-2', modulo_id: 'mod-regras-2', ordem: 1, pontos: 30,
+    enunciado: 'Um procedimento de segurança está desatualizado frente a uma situação real de risco. O que fazer?',
+    alternativas: ['Seguir do jeito que está escrito, mesmo achando arriscado', 'Priorizar a segurança real e reportar a inconsistência do procedimento', 'Ignorar e seguir em frente', 'Esperar a próxima reunião pra comentar'],
+    indice_correto: 1,
+    feedback: 'Segurança real vem antes do documento — e o documento se corrige reportando.',
+  },
+  {
+    id: 'q-regras2-3', modulo_id: 'mod-regras-2', ordem: 2, pontos: 30,
+    enunciado: 'Por que a DG mede e acompanha indicadores de saúde e segurança?',
+    alternativas: ['Só para relatório de auditoria', 'Para identificar riscos cedo e agir antes de um acidente', 'Não tem relação com o resultado do negócio', 'É exigência sem utilidade prática'],
+    indice_correto: 1,
+    feedback: 'O indicador existe pra agir antes do acidente, não só pra registrar depois.',
+  },
+  {
+    id: 'q-regras3-1', modulo_id: 'mod-regras-3', ordem: 0, pontos: 30,
+    enunciado: 'Informação de cliente ou de projeto obtida no trabalho pode ser comentada fora da empresa?',
+    alternativas: ['Sim, contanto que não cite nomes', 'Não — informação confidencial fica dentro dos canais autorizados', 'Sim, entre amigos de confiança', 'Depende do assunto'],
+    indice_correto: 1,
+    feedback: 'Confidencialidade não tem exceção por "ser só entre a gente".',
+  },
+  {
+    id: 'q-regras3-2', modulo_id: 'mod-regras-3', ordem: 1, pontos: 30,
+    enunciado: 'Você recebe um pedido informal de um terceiro por dados de um projeto da DG. Qual a conduta correta?',
+    alternativas: ['Atender, para ser gentil', 'Recusar e informar ao gestor sobre o pedido', 'Enviar parte da informação, sem detalhes sensíveis', 'Perguntar ao cliente antes de decidir sozinho'],
+    indice_correto: 1,
+    feedback: 'Pedido informal por dado sensível se recusa e se reporta — não se atende por educação.',
+  },
+  {
+    id: 'q-regras3-3', modulo_id: 'mod-regras-3', ordem: 2, pontos: 30,
+    enunciado: 'Por que confidencialidade é tratada como regra, não como recomendação?',
+    alternativas: ['Porque é só formalidade', 'Porque vazamento de informação pode custar contrato e confiança do cliente', 'Não faz diferença real', 'Só protege a DG, não o cliente'],
+    indice_correto: 1,
+    feedback: 'Vazamento quebra a confiança que sustenta o contrato — por isso é regra, não sugestão.',
+  },
 ]
 
 export const CONCLUSOES: ConclusaoModulo[] = [
@@ -209,6 +520,32 @@ export const CONCLUSOES: ConclusaoModulo[] = [
 export const PROGRESSO: ProgressoAula[] = [
   { id: 'p-1', tenant_id: TENANT_ID, user_id: USUARIO_ATUAL.id, aula_id: 'aula-1', segmentos: [[0, 180]], segundos_assistidos: 180, seek_liberado: true, concluida_em: '2026-07-18T14:00:00Z', atualizado_em: '2026-07-18T14:00:00Z' },
   { id: 'p-2', tenant_id: TENANT_ID, user_id: USUARIO_ATUAL.id, aula_id: 'aula-2', segmentos: [[0, 240]], segundos_assistidos: 240, seek_liberado: true, concluida_em: '2026-07-19T10:30:00Z', atualizado_em: '2026-07-19T10:30:00Z' },
+]
+
+/**
+ * Comentários — V1.1, mas a tela já nasce aqui (tabela também, ver
+ * supabase/migrations/0001_schema.sql). Seed só na aula do Código de Conduta,
+ * pra tela não nascer vazia; as demais começam sem comentário nenhum.
+ */
+export const COMENTARIOS: Comentario[] = [
+  {
+    id: 'com-1',
+    tenant_id: TENANT_ID,
+    aula_id: 'aula-3',
+    user_id: 'user-juliana',
+    parent_id: null,
+    texto: 'Bem direto ao ponto. Ajuda bastante ter exemplo prático de cliente, não só a regra seca.',
+    criado_em: '2026-07-19T11:20:00Z',
+  },
+  {
+    id: 'com-2',
+    tenant_id: TENANT_ID,
+    aula_id: 'aula-3',
+    user_id: 'user-rafael',
+    parent_id: null,
+    texto: 'Essa parte do canal de conduta com discrição eu não conhecia. Bom saber que existe.',
+    criado_em: '2026-07-19T15:45:00Z',
+  },
 ]
 
 export const COLABORADORES: ProgressoColaborador[] = [

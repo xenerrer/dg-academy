@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft, Check } from 'lucide-react'
@@ -13,6 +13,7 @@ import {
 import { PandaPlayer } from '@/components/PandaPlayer'
 import { QuizCard } from '@/components/QuizCard'
 import { ResultadoModulo } from '@/components/ResultadoModulo'
+import { Comentarios } from '@/components/Comentarios'
 import { Button } from '@/components/ui/button'
 
 type Fase = 'video' | 'quiz' | 'resultado'
@@ -29,7 +30,7 @@ export default function Aula() {
   const { data: usuario } = useQuery({ queryKey: ['usuario'], queryFn: obterUsuarioAtual })
   const { data: modulo } = useQuery({ queryKey: ['modulo', moduloId], queryFn: () => obterModulo(moduloId) })
   const { data: aula } = useQuery({ queryKey: ['aula', moduloId], queryFn: () => obterAulaDoModulo(moduloId) })
-  const { data: questoes = [] } = useQuery({
+  const { data: questoes = [], isPending: questoesCarregando } = useQuery({
     queryKey: ['questoes', moduloId],
     queryFn: () => listarQuestoes(moduloId),
   })
@@ -38,6 +39,23 @@ export default function Aula() {
     queryFn: () => obterProgressoAula(usuario!.id, aula!.id),
     enabled: !!usuario && !!aula,
   })
+
+  /**
+   * Rede de segurança: se um módulo chegar à fase de quiz sem nenhuma questão
+   * cadastrada, pular direto pra conclusão em vez de deixar a tela travada sem
+   * quiz e sem popup — foi exatamente esse buraco que deixou 14 dos 15 módulos
+   * inacessíveis até o quiz ser escrito para todos (só Código de Conduta tinha
+   * questões). `questoesCarregando` evita disparar no instante em que a query
+   * ainda não resolveu (array vazio momentâneo != módulo sem quiz de verdade).
+   */
+  useEffect(() => {
+    if (fase !== 'quiz' || questoesCarregando || questoes.length > 0 || !modulo) return
+    setResultado({ acertos: 0, pontos: 0 })
+    setFase('resultado')
+    concluirModulo({ modulo_id: modulo.id, acertos: 0, total: 0, pontos_ganhos: 0 }).then(() =>
+      queryClient.removeQueries({ queryKey: ['conclusoes'] }),
+    )
+  }, [fase, questoesCarregando, questoes.length, modulo?.id])
 
   if (!modulo || !aula) {
     return <div className="p-14 text-dg-muted">Carregando…</div>
@@ -121,6 +139,8 @@ export default function Aula() {
               }}
             />
           )}
+
+          {usuario && <Comentarios aulaId={aula.id} usuario={usuario} />}
         </div>
 
         <aside className="self-start lg:sticky lg:top-24">
