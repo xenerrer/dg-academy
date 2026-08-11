@@ -41,6 +41,7 @@ export function ModuloPoster({ modulo, status, onAbrir }: ModuloPosterProps) {
         'group relative aspect-[2/3] w-[218px] shrink-0 snap-start overflow-hidden rounded-[10px]',
         'border border-white/5 text-left transition duration-300',
         status === 'bloqueado' ? 'saturate-[0.55] brightness-[0.72]' : 'hover:scale-[1.045]',
+        modulo.destaque && 'shadow-[0_0_22px_rgba(255,218,0,0.28)]',
         tremendo && 'animate-shake',
       )}
     >
@@ -69,7 +70,7 @@ export function ModuloPoster({ modulo, status, onAbrir }: ModuloPosterProps) {
           <Check className="h-4 w-4 text-[#111]" strokeWidth={3} />
         </div>
       )}
-      {status === 'atual' && (
+      {modulo.destaque && (
         <div className="absolute right-4 top-0 rounded-b bg-dg-yellow px-1.5 py-2 text-[10px] font-extrabold tracking-[0.1em] text-[#111] [writing-mode:vertical-rl]">
           NOVO
         </div>

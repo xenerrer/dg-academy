@@ -47,20 +47,22 @@ export function BannerRegrasDaCasa() {
       onClick={() => navigate(`/aula/${MODULO_ID}`)}
       className="group relative mb-8 block h-[300px] w-full overflow-hidden rounded-surface border border-dg-line text-left sm:h-[280px]"
     >
+      {/* vídeo fonte é vertical (9:16); escala grande + origem no topo cobre a
+          largura toda do banner recortando corpo/fundo, não o rosto */}
       <iframe
         src={src}
         title=""
         tabIndex={-1}
         aria-hidden="true"
         style={{ border: 'none' }}
-        className="pointer-events-none absolute inset-0 h-full w-full scale-125 transition duration-slow ease-out-dg group-hover:scale-[1.32]"
+        className="pointer-events-none absolute inset-0 h-full w-full origin-top scale-[2.6] transition duration-slow ease-out-dg group-hover:scale-[2.7]"
         allow="autoplay"
       />
 
       {/* overlay: lavagem preta geral (leitura em qualquer ponto) + gradiente
           mais forte à esquerda, onde o texto fica */}
-      <div className="absolute inset-0 bg-black/45" />
-      <div className="absolute inset-0 bg-gradient-to-r from-dg-bg via-dg-bg/75 to-transparent" />
+      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-r from-dg-bg via-dg-bg/60 to-transparent" />
 
       <div className="relative flex h-full max-w-xl flex-col justify-center gap-3 px-6 sm:px-10">
         <span className="dg-eyebrow w-fit rounded-[6px] bg-dg-bg/70 px-2 py-1 text-dg-yellow backdrop-blur">

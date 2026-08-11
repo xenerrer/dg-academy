@@ -96,6 +96,7 @@ export const MODULOS: Modulo[] = [
     capa_url: '/capas/mod-regras-1.jpg',
     ordem: 1,
     sempre_disponivel: true,
+    destaque: true,
   },
   { id: 'mod-2', trilha_id: TRILHA.id, numero: 3, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: '/capas/mod-2.jpg', ordem: 2 },
   { id: 'mod-3', trilha_id: TRILHA.id, numero: 4, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: '/capas/mod-3.jpg', ordem: 3 },

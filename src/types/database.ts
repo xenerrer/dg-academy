@@ -65,6 +65,8 @@ export interface Modulo {
   ordem: number
   /** Ignora a trava sequencial: fica sempre acessível, independente do progresso. */
   sempre_disponivel?: boolean
+  /** Selo "NOVO" + brilho no card — fixo por módulo, não é derivado do progresso. */
+  destaque?: boolean
 }
 
 export interface Aula {
