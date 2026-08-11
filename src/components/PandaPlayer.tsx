@@ -108,30 +108,48 @@ export function PandaPlayer({
       if (cancelado) return
       window.pandascripttag = window.pandascripttag ?? []
       window.pandascripttag.push(() => {
-        if (cancelado) return
-        instancia = new window.PandaPlayer(elementId, {
-          onReady: () => {
-            if (cancelado || !instancia) return
-            const duracao = instancia.getDuration()
-            if (duracao > 0) setDuracaoReal(duracao)
+        // Troca rápida de aula/módulo pode desmontar o <iframe> antes desse
+        // callback assíncrono rodar. O SDK do Panda não lida bem com o
+        // elemento sumido (lança "element not found" fora de qualquer
+        // try/catch nosso) — sem essa checagem, isso derruba a página
+        // inteira, sem barreira de erro (foi exatamente o bug reportado:
+        // tela preta ao trocar de módulo).
+        if (cancelado || !document.getElementById(elementId)) return
+        try {
+          instancia = new window.PandaPlayer(elementId, {
+            onReady: () => {
+              if (cancelado || !instancia) return
+              const duracao = instancia.getDuration()
+              if (duracao > 0) setDuracaoReal(duracao)
 
-            instancia.onEvent(({ message, currentTime }) => {
-              if (message === 'panda_timeupdate' && typeof currentTime === 'number') {
-                onProgressoRef.current?.(Math.floor(currentTime))
-              }
-              if (message === 'panda_ended' && !concluiuRef.current) {
-                concluiuRef.current = true
-                onConcluirRef.current?.()
-              }
-            })
-          },
-        })
+              instancia.onEvent(({ message, currentTime }) => {
+                if (message === 'panda_timeupdate' && typeof currentTime === 'number') {
+                  onProgressoRef.current?.(Math.floor(currentTime))
+                }
+                if (message === 'panda_ended' && !concluiuRef.current) {
+                  concluiuRef.current = true
+                  onConcluirRef.current?.()
+                }
+              })
+            },
+            onError: () => {
+              // Falha do player (ex.: vídeo removido no Panda) não deve
+              // derrubar a página — o usuário só vê o placeholder por baixo.
+            },
+          })
+        } catch {
+          // ver comentário acima — elemento sumiu entre o check e a criação
+        }
       })
     })
 
     return () => {
       cancelado = true
-      instancia?.destroy?.()
+      try {
+        instancia?.destroy?.()
+      } catch {
+        // mesmo motivo: o SDK pode falhar ao limpar um elemento já removido
+      }
     }
   }, [pandaVideoId, elementId])
 

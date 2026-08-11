@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes, useLocation, Navigate } from 'react-route
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { listarConclusoes, obterUsuarioAtual } from '@/lib/api'
 import { AppNav } from '@/components/AppNav'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import Trilha from '@/pages/Trilha'
 import Aula from '@/pages/Aula'
@@ -34,12 +35,16 @@ function Layout({ children }: { children: React.ReactNode }) {
     pathname === '/mapa' ||
     pathname === '/mapa/animado'
   )
-    return <>{children}</>
+    return <ErrorBoundary key={pathname}>{children}</ErrorBoundary>
 
   return (
     <>
       <AppNav usuario={usuario} pontos={pontos} />
-      <main>{children}</main>
+      {/* key={pathname}: se uma tela quebrar, navegar para outra rota monta
+          uma barreira nova em vez de continuar presa no estado de erro. */}
+      <main>
+        <ErrorBoundary key={pathname}>{children}</ErrorBoundary>
+      </main>
     </>
   )
 }
