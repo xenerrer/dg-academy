@@ -8,44 +8,76 @@
  *
  * ⚠️ REGRA DE PRODUTO — não mover para o front:
  *
- * A trava de avanço ("na primeira visualização não dá pra pular") é validada
- * NO SERVIDOR, por decisão de produto. O componente aqui só:
- *   1. esconde os controles de seek,
- *   2. reporta progresso via onProgresso a cada ~10s.
- *
- * Quem decide se a aula foi concluída é a Edge Function de heartbeat, que
- * acumula os intervalos assistidos e rejeita saltos maiores que o tempo real
- * decorrido. Se essa lógica migrar para cá, qualquer pessoa com o DevTools
- * aberto burla a trava — e o relatório que o gestor usa para decidir vira
- * ficção. O valor inteiro do produto depende disso.
+ * A trava de avanço ("na primeira visualização não dá pra pular") tem duas
+ * camadas. A camada de UX é o parâmetro `disableForward` do embed do Panda,
+ * aplicado abaixo enquanto `seekLiberado` for falso — o próprio player recusa
+ * o arrasto pra frente. Mas a decisão que VALE pra liberar o módulo é do
+ * SERVIDOR: a Edge Function de heartbeat acumula os intervalos assistidos
+ * (via onProgresso) e rejeita saltos maiores que o tempo real decorrido. Se
+ * essa validação migrar pra cá, qualquer pessoa com o DevTools aberto burla a
+ * trava — e o relatório que o gestor usa pra decidir vira ficção.
  *
  * ============================================================================
- * ESTADO ATUAL: placeholder.
- *
- * O embed real do Panda ainda não foi implementado porque falta validar três
- * capacidades na documentação deles (ver docs/07-DECISOES-ABERTAS.md item 1):
- *   - desabilitar seek via configuração do player
- *   - travar velocidade em 1x
- *   - emitir eventos de progresso consumíveis por JS
- *
- * Enquanto isso, este componente simula a reprodução com um timer, mantendo
- * exatamente o mesmo contrato de props. Trocar a simulação pelo embed do Panda
- * não deve exigir mudança em nenhum outro arquivo.
+ * Integração via Panda Player API (script oficial `api.v2.js`), documentada em
+ * https://docs.pandavideo.com/reference/player-api e
+ * https://docs.pandavideo.com/reference/receive-events — eventos consumidos:
+ * `panda_timeupdate` (progresso) e `panda_ended` (conclusão).
  * ============================================================================
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { Lock, Play, Zap } from 'lucide-react'
+import { Lock } from 'lucide-react'
 import { formatarTempo } from '@/lib/utils'
-import { Progress } from '@/components/ui/progress'
+
+/** Subdomínio do player é por conta do cliente no Panda — fixo pro tenant DG Tech. */
+const PANDA_EMBED_HOST = 'https://player-vz-7716ee52-705.tv.pandavideo.com.br'
+const PANDA_API_SRC = 'https://player.pandavideo.com.br/api.v2.js'
+
+interface PandaEvento {
+  message: string
+  currentTime?: number
+}
+
+interface PandaInstancia {
+  onEvent: (callback: (evento: PandaEvento) => void) => void
+  getDuration: () => number
+  destroy: () => void
+}
+
+declare global {
+  interface Window {
+    pandascripttag?: Array<() => void>
+    PandaPlayer: new (
+      elementId: string,
+      opcoes: { onReady?: () => void; onError?: (evento: unknown) => void },
+    ) => PandaInstancia
+  }
+}
+
+let scriptDoPandaCarregado: Promise<void> | null = null
+
+/** Garante um único <script> do Panda na página, mesmo com vários players montando. */
+function carregarScriptDoPanda(): Promise<void> {
+  if (window.PandaPlayer) return Promise.resolve()
+  if (scriptDoPandaCarregado) return scriptDoPandaCarregado
+
+  scriptDoPandaCarregado = new Promise((resolve) => {
+    const script = document.createElement('script')
+    script.src = PANDA_API_SRC
+    script.async = true
+    script.addEventListener('load', () => resolve(), { once: true })
+    document.body.appendChild(script)
+  })
+  return scriptDoPandaCarregado
+}
 
 interface PandaPlayerProps {
-  /** ID do vídeo no Panda. Nulo enquanto o cliente não subir os vídeos. */
+  /** ID (UUID) do vídeo no Panda. Nulo enquanto o cliente não subir o vídeo. */
   pandaVideoId: string | null
   duracaoSeg: number
   /** Se o servidor já liberou navegação livre (aula concluída antes). */
   seekLiberado: boolean
-  /** Chamado a cada tick de progresso. Vira o heartbeat para a Edge Function. */
+  /** Chamado a cada atualização de progresso do player. Vira o heartbeat para a Edge Function. */
   onProgresso?: (segundoAtual: number) => void
   onConcluir?: () => void
 }
@@ -57,105 +89,81 @@ export function PandaPlayer({
   onProgresso,
   onConcluir,
 }: PandaPlayerProps) {
-  const [tocando, setTocando] = useState(false)
-  const [posicao, setPosicao] = useState(0)
-  const [avisoSeek, setAvisoSeek] = useState(false)
+  const [duracaoReal, setDuracaoReal] = useState(duracaoSeg)
   const concluiuRef = useRef(false)
-  const posicaoRef = useRef(0)
-
-  /**
-   * Callbacks guardados em ref para não entrarem nas dependências do efeito.
-   *
-   * Sem isso, um pai que passe `onProgresso={(s) => ...}` inline recria a função
-   * a cada render, o efeito é desmontado e remontado, e o setInterval reinicia
-   * antes de completar 1s — o player simplesmente nunca avança. Já aconteceu
-   * aqui; não voltar atrás.
-   */
   const onProgressoRef = useRef(onProgresso)
   const onConcluirRef = useRef(onConcluir)
   onProgressoRef.current = onProgresso
   onConcluirRef.current = onConcluir
 
+  const elementId = pandaVideoId ? `panda-${pandaVideoId}` : ''
+
   useEffect(() => {
-    if (!tocando) return
+    if (!pandaVideoId) return
+    concluiuRef.current = false
+    let instancia: PandaInstancia | null = null
+    let cancelado = false
 
-    // Efeitos colaterais (reportar progresso, avisar conclusão) rodam AQUI, no
-    // callback do interval — não dentro do updater de setPosicao. Chamar o
-    // setState do pai (onConcluir) de dentro de um updater dispara o aviso
-    // "Cannot update a component while rendering a different component".
-    const intervalo = setInterval(() => {
-      const proximo = Math.min(posicaoRef.current + 1, duracaoSeg)
-      posicaoRef.current = proximo
-      setPosicao(proximo)
-      onProgressoRef.current?.(proximo)
+    carregarScriptDoPanda().then(() => {
+      if (cancelado) return
+      window.pandascripttag = window.pandascripttag ?? []
+      window.pandascripttag.push(() => {
+        if (cancelado) return
+        instancia = new window.PandaPlayer(elementId, {
+          onReady: () => {
+            if (cancelado || !instancia) return
+            const duracao = instancia.getDuration()
+            if (duracao > 0) setDuracaoReal(duracao)
 
-      if (proximo >= duracaoSeg && !concluiuRef.current) {
-        concluiuRef.current = true
-        setTocando(false)
-        onConcluirRef.current?.()
-      }
-    }, 1000)
+            instancia.onEvent(({ message, currentTime }) => {
+              if (message === 'panda_timeupdate' && typeof currentTime === 'number') {
+                onProgressoRef.current?.(Math.floor(currentTime))
+              }
+              if (message === 'panda_ended' && !concluiuRef.current) {
+                concluiuRef.current = true
+                onConcluirRef.current?.()
+              }
+            })
+          },
+        })
+      })
+    })
 
-    return () => clearInterval(intervalo)
-  }, [tocando, duracaoSeg])
+    return () => {
+      cancelado = true
+      instancia?.destroy?.()
+    }
+  }, [pandaVideoId, elementId])
 
-  function tentarSeek() {
-    if (seekLiberado) return
-    setAvisoSeek(true)
-    setTimeout(() => setAvisoSeek(false), 2100)
+  if (!pandaVideoId) {
+    return (
+      <div className="relative flex aspect-video max-h-[560px] items-center justify-center overflow-hidden rounded-xl border border-dg-line bg-black">
+        <div className="absolute inset-0 bg-[radial-gradient(560px_320px_at_72%_18%,rgba(255,218,0,0.11),transparent_62%),linear-gradient(160deg,#151515,#080808)]" />
+        <span className="relative dg-eyebrow text-dg-muted">Aguardando vídeo do Panda</span>
+      </div>
+    )
   }
 
-  const percentual = duracaoSeg > 0 ? (posicao / duracaoSeg) * 100 : 0
+  const src = `${PANDA_EMBED_HOST}/embed/?v=${pandaVideoId}${seekLiberado ? '' : '&disableForward=true'}`
 
   return (
     <div className="relative aspect-video max-h-[560px] overflow-hidden rounded-xl border border-dg-line bg-black">
-      {/* Placeholder visual — sai quando o embed do Panda entrar */}
-      <div className="absolute inset-0 bg-[radial-gradient(560px_320px_at_72%_18%,rgba(255,218,0,0.11),transparent_62%),linear-gradient(160deg,#151515,#080808)]" />
+      <iframe
+        id={elementId}
+        key={elementId}
+        src={src}
+        style={{ border: 'none' }}
+        className="absolute inset-0 h-full w-full"
+        allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+        allowFullScreen
+      />
+      <span className="sr-only">Duração: {formatarTempo(duracaoReal)}</span>
 
-      <div className="absolute inset-x-0 top-0 flex flex-col items-center gap-2 px-8 pt-10 text-center">
-        <span className="dg-eyebrow text-dg-yellow">
-          {pandaVideoId ? `Panda · ${pandaVideoId}` : 'Aguardando vídeo do Panda'}
-        </span>
-        <p className="max-w-md text-xs leading-relaxed text-dg-muted">
-          O embed real entra aqui. A simulação existe só para exercitar o fluxo de progresso
-          enquanto a conta do Panda não está ativa.
-        </p>
-      </div>
-
-      {!tocando && posicao === 0 && (
-        <button
-          onClick={() => setTocando(true)}
-          aria-label="Reproduzir"
-          className="absolute inset-0 z-10 m-auto flex h-[74px] w-[74px] items-center justify-center rounded-full bg-dg-yellow transition hover:scale-110 hover:shadow-[0_0_46px_rgba(255,218,0,0.4)]"
-        >
-          <Play className="h-6 w-6 fill-[#111] text-[#111]" />
-        </button>
-      )}
-
-      {avisoSeek && (
-        <div className="absolute bottom-16 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-control border border-dg-yellow/50 bg-dg-bg px-4 py-2 text-xs font-semibold">
-          <Zap className="h-3.5 w-3.5 fill-dg-yellow text-dg-yellow" />
-          <span>
-            <b className="text-dg-yellow">Visualização monitorada</b> — não é possível avançar
-          </span>
+      {!seekLiberado && (
+        <div className="pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-control border border-dg-yellow/50 bg-dg-bg/90 px-3 py-1.5 text-[11px] font-semibold text-dg-yellow">
+          <Lock className="h-3 w-3" /> Reprodução contínua obrigatória
         </div>
       )}
-
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/90 to-transparent px-4 pb-3.5 pt-3">
-        <div onClick={tentarSeek} className={seekLiberado ? 'cursor-pointer' : 'cursor-not-allowed'}>
-          <Progress valor={percentual} />
-        </div>
-        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <span className="font-mono text-[11.5px] text-dg-muted">
-            {formatarTempo(posicao)} / {formatarTempo(duracaoSeg)}
-          </span>
-          {!seekLiberado && (
-            <span className="flex items-center gap-1.5 text-[11px] font-semibold text-dg-yellow">
-              <Lock className="h-3 w-3" /> Reprodução contínua obrigatória
-            </span>
-          )}
-        </div>
-      </div>
     </div>
   )
 }
