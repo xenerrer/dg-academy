@@ -11,8 +11,9 @@ const MODULO_ID = 'mod-regras-casa'
 /**
  * Banner de lançamento do módulo "Regras da Casa" — some sozinho assim que a
  * pessoa concluir o módulo (é aviso de novidade, não decoração permanente).
- * Vídeo de fundo é o primeiro da playlist, mudo e em loop, só ilustrativo:
- * o clique no banner inteiro leva direto pro módulo.
+ * Vídeo de fundo é mudo e em loop, só ilustrativo: o clique no banner inteiro
+ * leva direto pro módulo. Fixo no 4º vídeo da playlist (índice 3) por
+ * variedade em relação ao 1º, que já abre a playlist em si.
  *
  * `autoplay`+`muted` na URL do embed é o mecanismo oficial do Panda pra
  * autoplay silencioso — não dá pra confirmar visualmente em navegador
@@ -36,7 +37,7 @@ export function BannerRegrasDaCasa() {
   })
 
   const concluido = conclusoes.some((c) => c.modulo_id === MODULO_ID)
-  const videoId = aulas[0]?.panda_video_id
+  const videoId = (aulas[3] ?? aulas[0])?.panda_video_id
 
   if (!usuario || concluido || !videoId) return null
 
@@ -61,8 +62,8 @@ export function BannerRegrasDaCasa() {
 
       {/* overlay: lavagem preta geral (leitura em qualquer ponto) + gradiente
           mais forte à esquerda, onde o texto fica */}
-      <div className="absolute inset-0 bg-black/20" />
-      <div className="absolute inset-0 bg-gradient-to-r from-dg-bg via-dg-bg/60 to-transparent" />
+      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-dg-bg via-dg-bg/40 to-transparent" />
 
       <div className="relative flex h-full max-w-xl flex-col justify-center gap-3 px-6 sm:px-10">
         <span className="dg-eyebrow w-fit rounded-[6px] bg-dg-bg/70 px-2 py-1 text-dg-yellow backdrop-blur">

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { entrar } from '@/lib/api'
+import { cadastrar, entrar } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { PainelMarca } from '@/components/auth/PainelMarca'
 import { FormEntrar } from '@/components/auth/FormEntrar'
@@ -30,6 +30,12 @@ export default function Login() {
    */
   async function acessar() {
     await entrar()
+    await queryClient.invalidateQueries({ queryKey: ['usuario'] })
+    navigate('/bem-vindo')
+  }
+
+  async function cadastrarEAcessar(dados: { nome: string; cargo: string; setorId: string }) {
+    await cadastrar(dados)
     await queryClient.invalidateQueries({ queryKey: ['usuario'] })
     navigate('/bem-vindo')
   }
@@ -68,7 +74,7 @@ export default function Login() {
           {aba === 'entrar' ? (
             <FormEntrar onEntrar={acessar} />
           ) : (
-            <FormCadastro onCadastrar={acessar} />
+            <FormCadastro onCadastrar={cadastrarEAcessar} />
           )}
 
           <p className="mt-6 text-caption text-dg-muted">

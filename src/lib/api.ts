@@ -53,19 +53,76 @@ const atraso = <T>(dado: T, ms = 220): Promise<T> =>
 // A assinatura das três não muda, então nenhum componente é tocado.
 
 const CHAVE_SESSAO = 'dg-sessao'
+/** Perfil de quem passou por "Criar acesso" nesta sessão — ver cadastrar(). */
+const CHAVE_PERFIL_SESSAO = 'dg-perfil-sessao'
 
 export async function entrar() {
+  // limpa um cadastro de sessão anterior: sem isso, "Entrar" depois de um
+  // "Criar acesso" de teste continuaria mostrando o nome digitado antes.
+  sessionStorage.removeItem(CHAVE_PERFIL_SESSAO)
   sessionStorage.setItem(CHAVE_SESSAO, USUARIO_ATUAL.id)
   return atraso(USUARIO_ATUAL, 320)
 }
 
 export async function sair() {
   sessionStorage.removeItem(CHAVE_SESSAO)
+  sessionStorage.removeItem(CHAVE_PERFIL_SESSAO)
+}
+
+/**
+ * Aba "Criar acesso": nome, cargo e setor digitados no formulário viram o
+ * perfil desta sessão — sem isso, o onboarding confirmava um nome que a
+ * pessoa nunca preencheu (sempre o mock fixo). Id próprio ('user-novo') e não
+ * o do USUARIO_ATUAL: assim listarConclusoes() começa vazia, do jeito que
+ * um colaborador recém-cadastrado deveria começar.
+ *
+ * Quando o Supabase entrar, isto vira o INSERT em profiles feito pelo RH.
+ */
+export async function cadastrar(dados: { nome: string; cargo: string; setorId: string }): Promise<Profile> {
+  const perfil: Profile = {
+    ...USUARIO_ATUAL,
+    id: 'user-novo',
+    nome: dados.nome,
+    cargo: dados.cargo,
+    setor_id: dados.setorId,
+    foto_url: null,
+    onboarding_concluido_em: null,
+  }
+  try {
+    sessionStorage.setItem(CHAVE_PERFIL_SESSAO, JSON.stringify(perfil))
+  } catch {
+    // storage indisponível — a sessão ainda funciona, só cai no mock fixo
+  }
+  sessionStorage.setItem(CHAVE_SESSAO, perfil.id)
+  return atraso(perfil, 320)
+}
+
+/**
+ * Versão síncrona da resolução de sessão — usada tanto por obterUsuarioAtual
+ * quanto por qualquer gravação (concluirModulo, criarComentario) que precise
+ * saber QUEM está agindo agora, e não sempre o USUARIO_ATUAL fixo. Sem isso,
+ * um colaborador que passou por "Criar acesso" concluiria módulos que
+ * apareceriam gravados em nome do Marcos, e o próprio progresso dele nunca
+ * apareceria (listarConclusoes filtra por user_id).
+ */
+function perfilDaSessaoAtual(): Profile | null {
+  const sessaoId = sessionStorage.getItem(CHAVE_SESSAO)
+  if (!sessaoId) return null
+  if (sessaoId === USUARIO_ATUAL.id) return USUARIO_ATUAL
+
+  try {
+    const bruto = sessionStorage.getItem(CHAVE_PERFIL_SESSAO)
+    const perfil = bruto ? (JSON.parse(bruto) as Profile) : null
+    if (perfil && perfil.id === sessaoId) return perfil
+  } catch {
+    // JSON inválido — cai no mock fixo abaixo
+  }
+  return USUARIO_ATUAL
 }
 
 export async function obterUsuarioAtual(): Promise<Profile | null> {
-  if (!sessionStorage.getItem(CHAVE_SESSAO)) return null
-  return atraso(USUARIO_ATUAL)
+  const perfil = perfilDaSessaoAtual()
+  return perfil ? atraso(perfil) : null
 }
 
 export async function obterTrilha() {
@@ -208,10 +265,11 @@ export async function concluirModulo(dados: {
   const existentes = lerConclusoesDaSessao()
   if (existentes.some((c) => c.modulo_id === dados.modulo_id)) return
 
+  const perfil = perfilDaSessaoAtual() ?? USUARIO_ATUAL
   existentes.push({
     id: `sessao-${dados.modulo_id}`,
-    tenant_id: USUARIO_ATUAL.tenant_id,
-    user_id: USUARIO_ATUAL.id,
+    tenant_id: perfil.tenant_id,
+    user_id: perfil.id,
     modulo_id: dados.modulo_id,
     acertos: dados.acertos,
     total: dados.total,
@@ -253,11 +311,12 @@ export async function listarComentarios(aulaId: string): Promise<Comentario[]> {
 }
 
 export async function criarComentario(dados: { aula_id: string; texto: string }): Promise<Comentario> {
+  const perfil = perfilDaSessaoAtual() ?? USUARIO_ATUAL
   const novo: Comentario = {
     id: `sessao-com-${Date.now()}`,
-    tenant_id: USUARIO_ATUAL.tenant_id,
+    tenant_id: perfil.tenant_id,
     aula_id: dados.aula_id,
-    user_id: USUARIO_ATUAL.id,
+    user_id: perfil.id,
     parent_id: null,
     texto: dados.texto,
     criado_em: new Date().toISOString(),

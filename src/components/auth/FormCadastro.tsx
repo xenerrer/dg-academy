@@ -24,26 +24,32 @@ const TRILHAS_PADRAO = ['Integração DG (com Regras da Casa)', 'Missão, visão
 
 const SETORES = [
   {
-    id: 'campo',
+    id: 'setor-campo',
     nome: 'Engenharia de Campo',
     icone: HardHat,
     treinamentos: ['NR-10 — Segurança em eletricidade', 'EPIs e procedimentos de obra', 'Ferramentas e instalações'],
   },
   {
-    id: 'orcamentos',
+    id: 'setor-orcamentos',
     nome: 'Orçamentos',
     icone: Calculator,
     treinamentos: ['Levantamento e composição de custos', 'Normas técnicas aplicadas a orçamento', 'Relacionamento com o cliente'],
   },
   {
-    id: 'adm',
+    id: 'setor-adm',
     nome: 'Administrativo',
     icone: Building2,
     treinamentos: ['Processos internos e sistemas', 'Atendimento e comunicação'],
   },
 ]
 
-export function FormCadastro({ onCadastrar }: { onCadastrar: () => void }) {
+interface FormCadastroProps {
+  onCadastrar: (dados: { nome: string; cargo: string; setorId: string }) => void
+}
+
+export function FormCadastro({ onCadastrar }: FormCadastroProps) {
+  const [nome, setNome] = useState('')
+  const [cargo, setCargo] = useState('')
   const [setorId, setSetorId] = useState<string | null>(null)
   const setor = SETORES.find((s) => s.id === setorId)
 
@@ -52,17 +58,28 @@ export function FormCadastro({ onCadastrar }: { onCadastrar: () => void }) {
       className="space-y-4"
       onSubmit={(e) => {
         e.preventDefault()
-        onCadastrar()
+        if (!setorId) return
+        onCadastrar({ nome, cargo, setorId })
       }}
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
           <span className="mb-1.5 block text-label text-dg-muted">Nome</span>
-          <Input placeholder="Nome do colaborador" required />
+          <Input
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            placeholder="Nome do colaborador"
+            required
+          />
         </label>
         <label className="block">
           <span className="mb-1.5 block text-label text-dg-muted">Cargo</span>
-          <Input placeholder="Ex.: Eletricista Jr." required />
+          <Input
+            value={cargo}
+            onChange={(e) => setCargo(e.target.value)}
+            placeholder="Ex.: Eletricista Jr."
+            required
+          />
         </label>
       </div>
       <label className="block">
