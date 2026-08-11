@@ -9,13 +9,16 @@
  * ⚠️ REGRA DE PRODUTO — não mover para o front:
  *
  * A trava de avanço ("na primeira visualização não dá pra pular") tem duas
- * camadas. A camada de UX é o parâmetro `disableForward` do embed do Panda,
- * aplicado abaixo enquanto `seekLiberado` for falso — o próprio player recusa
- * o arrasto pra frente. Mas a decisão que VALE pra liberar o módulo é do
- * SERVIDOR: a Edge Function de heartbeat acumula os intervalos assistidos
- * (via onProgresso) e rejeita saltos maiores que o tempo real decorrido. Se
- * essa validação migrar pra cá, qualquer pessoa com o DevTools aberto burla a
- * trava — e o relatório que o gestor usa pra decidir vira ficção.
+ * camadas. A camada de UX é o embed do Panda, enquanto `seekLiberado` for
+ * falso: `disableForward` recusa o arrasto/clique/seta-do-teclado pra frente
+ * OU pra trás, e `controls` some com a barra de progresso e os botões de
+ * avançar/retroceder — não é só bloquear o gesto, é tirar o afordance de tela
+ * inteiro (testado manualmente contra clique, arrasto, seta e duplo-clique).
+ * Mas a decisão que VALE pra liberar o módulo é do SERVIDOR: a Edge Function
+ * de heartbeat acumula os intervalos assistidos (via onProgresso) e rejeita
+ * saltos maiores que o tempo real decorrido. Se essa validação migrar pra cá,
+ * qualquer pessoa com o DevTools aberto burla a trava — e o relatório que o
+ * gestor usa pra decidir vira ficção.
  *
  * ============================================================================
  * Integração via Panda Player API (script oficial `api.v2.js`), documentada em
@@ -26,12 +29,14 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { Lock } from 'lucide-react'
 import { formatarTempo } from '@/lib/utils'
 
 /** Subdomínio do player é por conta do cliente no Panda — fixo pro tenant DG Tech. */
-const PANDA_EMBED_HOST = 'https://player-vz-7716ee52-705.tv.pandavideo.com.br'
+export const PANDA_EMBED_HOST = 'https://player-vz-7716ee52-705.tv.pandavideo.com.br'
 const PANDA_API_SRC = 'https://player.pandavideo.com.br/api.v2.js'
+
+/** Sem "progress"/"current-time"/"rewind"/"fast-forward": zero afordance de avanço na tela. */
+const CONTROLES_SEM_AVANCO = 'play,volume,captions,settings,pip,cast,fullscreen'
 
 interface PandaEvento {
   message: string
@@ -41,6 +46,7 @@ interface PandaEvento {
 interface PandaInstancia {
   onEvent: (callback: (evento: PandaEvento) => void) => void
   getDuration: () => number
+  play: () => void
   destroy: () => void
 }
 
@@ -162,7 +168,9 @@ export function PandaPlayer({
     )
   }
 
-  const src = `${PANDA_EMBED_HOST}/embed/?v=${pandaVideoId}${seekLiberado ? '' : '&disableForward=true'}`
+  const src = `${PANDA_EMBED_HOST}/embed/?v=${pandaVideoId}${
+    seekLiberado ? '' : `&disableForward=true&controls=${CONTROLES_SEM_AVANCO}`
+  }`
 
   return (
     <div className="relative aspect-video max-h-[560px] overflow-hidden rounded-xl border border-dg-line bg-black">
@@ -176,12 +184,6 @@ export function PandaPlayer({
         allowFullScreen
       />
       <span className="sr-only">Duração: {formatarTempo(duracaoReal)}</span>
-
-      {!seekLiberado && (
-        <div className="pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-control border border-dg-yellow/50 bg-dg-bg/90 px-3 py-1.5 text-[11px] font-semibold text-dg-yellow">
-          <Lock className="h-3 w-3" /> Reprodução contínua obrigatória
-        </div>
-      )}
     </div>
   )
 }

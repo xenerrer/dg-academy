@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Zap } from 'lucide-react'
 import { calcularStatusModulos, listarConclusoes, listarModulos, obterUsuarioAtual } from '@/lib/api'
+import { BannerRegrasDaCasa } from '@/components/BannerRegrasDaCasa'
 import { ModuloPoster } from '@/components/ModuloPoster'
 import { ParaVoce } from '@/components/ParaVoce'
 import { Progress } from '@/components/ui/progress'
@@ -34,6 +35,8 @@ export default function Trilha() {
 
   return (
     <div className="px-[5vw] py-14">
+      <BannerRegrasDaCasa />
+
       <section className="mb-14">
         <div className="mb-5 flex flex-wrap items-baseline gap-3.5">
           <h1 className="dg-secao">minhaJornada</h1>
