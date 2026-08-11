@@ -4,17 +4,21 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ArrowLeft, Check } from 'lucide-react'
 import {
   concluirModulo,
+  listarAulasAssistidas,
+  listarAulasDoModulo,
   listarQuestoes,
-  obterAulaDoModulo,
+  marcarAulaAssistida,
   obterModulo,
   obterProgressoAula,
   obterUsuarioAtual,
 } from '@/lib/api'
 import { PandaPlayer } from '@/components/PandaPlayer'
+import { PlaylistAulas } from '@/components/PlaylistAulas'
 import { QuizCard } from '@/components/QuizCard'
 import { ResultadoModulo } from '@/components/ResultadoModulo'
 import { Comentarios } from '@/components/Comentarios'
 import { Button } from '@/components/ui/button'
+import type { Aula as AulaType } from '@/types/database'
 
 type Fase = 'video' | 'quiz' | 'resultado'
 
@@ -26,19 +30,57 @@ export default function Aula() {
   const [fase, setFase] = useState<Fase>('video')
   const [videoTerminou, setVideoTerminou] = useState(false)
   const [resultado, setResultado] = useState({ acertos: 0, pontos: 0 })
+  const [aulaAtualId, setAulaAtualId] = useState<string | null>(null)
 
   const { data: usuario } = useQuery({ queryKey: ['usuario'], queryFn: obterUsuarioAtual })
   const { data: modulo } = useQuery({ queryKey: ['modulo', moduloId], queryFn: () => obterModulo(moduloId) })
-  const { data: aula } = useQuery({ queryKey: ['aula', moduloId], queryFn: () => obterAulaDoModulo(moduloId) })
+  const { data: aulas = [] } = useQuery({
+    queryKey: ['aulas', moduloId],
+    queryFn: () => listarAulasDoModulo(moduloId),
+  })
+  const { data: assistidasArr = [] } = useQuery({
+    queryKey: ['aulas-assistidas'],
+    queryFn: listarAulasAssistidas,
+  })
   const { data: questoes = [], isPending: questoesCarregando } = useQuery({
     queryKey: ['questoes', moduloId],
     queryFn: () => listarQuestoes(moduloId),
   })
+
+  const ehPlaylist = aulas.length > 1
+  const assistidas = new Set(assistidasArr)
+
+  /**
+   * Módulo com 1 aula só (a maioria): abre ela direto. Módulo com playlist
+   * ("Regras da Casa"): abre o primeiro vídeo ainda não assistido, ou o
+   * primeiro de todos se já foi tudo assistido antes.
+   */
+  const aula: AulaType | undefined =
+    aulas.find((a) => a.id === aulaAtualId) ??
+    (ehPlaylist ? aulas.find((a) => !assistidas.has(a.id)) ?? aulas[0] : aulas[0])
+
   const { data: progresso } = useQuery({
     queryKey: ['progresso', usuario?.id, aula?.id],
     queryFn: () => obterProgressoAula(usuario!.id, aula!.id),
     enabled: !!usuario && !!aula,
   })
+
+  /** Trocou de vídeo dentro da playlist: a trava de "marcar como visto" reseta. */
+  useEffect(() => {
+    setVideoTerminou(false)
+  }, [aula?.id])
+
+  const todasAssistidas = aulas.length > 0 && aulas.every((a) => assistidas.has(a.id))
+
+  /**
+   * Playlist já assistida por completo antes desta visita (ex.: reabriu o
+   * módulo depois de já ter marcado os 9 vídeos numa sessão anterior) — a fase
+   * local nasce em 'video' mesmo assim, então sem isso o botão "Marcar como
+   * visto" simplesmente some e não sobra caminho até o quiz.
+   */
+  useEffect(() => {
+    if (ehPlaylist && todasAssistidas && fase === 'video') setFase('quiz')
+  }, [ehPlaylist, todasAssistidas, fase])
 
   /**
    * Rede de segurança: se um módulo chegar à fase de quiz sem nenhuma questão
@@ -71,6 +113,22 @@ export default function Aula() {
     }
   }
 
+  /** Marca a aula atual como vista. Numa playlist, avança pro próximo vídeo em vez do quiz. */
+  function marcarComoVisto() {
+    if (!ehPlaylist) {
+      setFase('quiz')
+      return
+    }
+
+    marcarAulaAssistida(aula!.id).then(() => queryClient.invalidateQueries({ queryKey: ['aulas-assistidas'] }))
+    const proxima = aulas.find((a) => a.id !== aula!.id && !assistidas.has(a.id))
+    if (proxima) {
+      setAulaAtualId(proxima.id)
+    } else {
+      setFase('quiz')
+    }
+  }
+
   return (
     <div className="mx-auto max-w-[1160px] px-6 pb-20 pt-6">
       <div className="mb-4 flex items-center gap-3.5">
@@ -95,7 +153,16 @@ export default function Aula() {
 
       <div className="mt-9 grid gap-11 lg:grid-cols-[1fr_300px]">
         <div>
-          <h2 className="font-display text-[26px] font-bold">Apresentação</h2>
+          {ehPlaylist && (
+            <PlaylistAulas
+              aulas={aulas}
+              assistidas={assistidas}
+              aulaAtualId={aula.id}
+              onSelecionar={(a) => setAulaAtualId(a.id)}
+            />
+          )}
+
+          <h2 className="font-display text-[26px] font-bold">{ehPlaylist ? aula.titulo : 'Apresentação'}</h2>
           <div className="my-3 flex flex-wrap items-center gap-2 text-xs text-dg-muted">
             <span>Início</span>
             <span className="text-[#3a3a3a]">›</span>
@@ -109,14 +176,25 @@ export default function Aula() {
           )}
 
           <div className="my-7 flex flex-wrap items-center gap-3 border-y border-dg-line py-4">
-            <Button
-              variant={videoTerminou ? 'success' : 'ghost'}
-              disabled={!videoTerminou || fase !== 'video'}
-              onClick={() => setFase('quiz')}
-              className="ml-auto"
-            >
-              {fase === 'video' ? 'Marcar como visto' : 'Visto'} <Check className="h-4 w-4" />
-            </Button>
+            {ehPlaylist && !todasAssistidas ? (
+              <Button
+                variant={videoTerminou ? 'success' : 'ghost'}
+                disabled={!videoTerminou}
+                onClick={marcarComoVisto}
+                className="ml-auto"
+              >
+                Marcar como visto <Check className="h-4 w-4" />
+              </Button>
+            ) : !ehPlaylist ? (
+              <Button
+                variant={videoTerminou ? 'success' : 'ghost'}
+                disabled={!videoTerminou || fase !== 'video'}
+                onClick={marcarComoVisto}
+                className="ml-auto"
+              >
+                {fase === 'video' ? 'Marcar como visto' : 'Visto'} <Check className="h-4 w-4" />
+              </Button>
+            ) : null}
           </div>
 
           {fase === 'quiz' && questoes.length > 0 && (
@@ -148,7 +226,7 @@ export default function Aula() {
             <h3 className="mb-4 font-display text-sm font-bold">Etapas do módulo</h3>
             <ol className="space-y-3 border-l border-dg-line pl-4 text-xs">
               <li className={fase === 'video' ? 'text-dg-yellow' : 'text-dg-success'}>
-                1. Vídeo do módulo
+                {ehPlaylist ? `1. Vídeos da playlist (${assistidas.size}/${aulas.length})` : '1. Vídeo do módulo'}
               </li>
               <li className={fase === 'quiz' ? 'text-dg-yellow' : 'text-dg-muted'}>
                 2. Questões de desbloqueio

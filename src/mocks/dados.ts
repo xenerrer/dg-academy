@@ -84,44 +84,39 @@ export const TRILHA_CODIGOS_CONDUTA: Trilha = {
   ativa: true,
 }
 
-export const TRILHA_REGRAS_DG: Trilha = {
-  id: 'trilha-regras-dg',
-  tenant_id: TENANT_ID,
-  nome: 'Regras da DG',
-  descricao: 'Políticas e procedimentos operacionais da empresa.',
-  ordem: 12,
-  ativa: true,
-}
-
 export const MODULOS: Modulo[] = [
   // Trilha: Integração DG Tech
   { id: 'mod-1', trilha_id: TRILHA.id, numero: 1, titulo: 'Boas-vindas à DG', descricao: null, capa_url: '/capas/mod-1.jpg', ordem: 0 },
-  { id: 'mod-2', trilha_id: TRILHA.id, numero: 2, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: '/capas/mod-2.jpg', ordem: 1 },
-  { id: 'mod-3', trilha_id: TRILHA.id, numero: 3, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: '/capas/mod-3.jpg', ordem: 2 },
-  { id: 'mod-4', trilha_id: TRILHA.id, numero: 4, titulo: 'Segurança & EPIs', descricao: null, capa_url: '/capas/mod-4.jpg', ordem: 3 },
-  { id: 'mod-5', trilha_id: TRILHA.id, numero: 5, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: '/capas/mod-5.jpg', ordem: 4 },
-  { id: 'mod-6', trilha_id: TRILHA.id, numero: 6, titulo: 'Certificação DG Tech', descricao: null, capa_url: '/capas/mod-6.jpg', ordem: 5 },
+  {
+    id: 'mod-regras-casa',
+    trilha_id: TRILHA.id,
+    numero: 2,
+    titulo: 'Regras da Casa',
+    descricao: 'Playlist com as regras do dia a dia na DG — assista quando quiser.',
+    capa_url: '/capas/mod-regras-1.jpg',
+    ordem: 1,
+    sempre_disponivel: true,
+  },
+  { id: 'mod-2', trilha_id: TRILHA.id, numero: 3, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: '/capas/mod-2.jpg', ordem: 2 },
+  { id: 'mod-3', trilha_id: TRILHA.id, numero: 4, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: '/capas/mod-3.jpg', ordem: 3 },
+  { id: 'mod-4', trilha_id: TRILHA.id, numero: 5, titulo: 'Segurança & EPIs', descricao: null, capa_url: '/capas/mod-4.jpg', ordem: 4 },
+  { id: 'mod-5', trilha_id: TRILHA.id, numero: 6, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: '/capas/mod-5.jpg', ordem: 5 },
+  { id: 'mod-6', trilha_id: TRILHA.id, numero: 7, titulo: 'Certificação DG Tech', descricao: null, capa_url: '/capas/mod-6.jpg', ordem: 6 },
 
   // Trilha: Missão, Visão e Valores (obrigatória)
-  { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: '/capas/mod-mvv-1.jpg', ordem: 0 },
-  { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: '/capas/mod-mvv-2.jpg', ordem: 1 },
-  { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: '/capas/mod-mvv-3.jpg', ordem: 2 },
+  // ordem contínuo a partir da Integração: listarModulos() devolve TODOS os
+  // módulos numa lista só (é o que alimenta /mapa e /trilha), então "ordem"
+  // precisa ser único no conjunto inteiro — reiniciar em 0 por trilha faz o
+  // sort intercalar trilhas por empate (bug real que tirou "Regras da Casa"
+  // do lugar 2 antes desse fix).
+  { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: '/capas/mod-mvv-1.jpg', ordem: 7 },
+  { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: '/capas/mod-mvv-2.jpg', ordem: 8 },
+  { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: '/capas/mod-mvv-3.jpg', ordem: 9 },
 
   // Trilha: Códigos de Conduta (obrigatória)
-  { id: 'mod-cond-1', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 1, titulo: 'Ética e Integridade', descricao: 'Princípios éticos na DG Tech.', capa_url: '/capas/mod-cond-1.jpg', ordem: 0 },
-  { id: 'mod-cond-2', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 2, titulo: 'Respeito e Diversidade', descricao: 'Um ambiente inclusivo para todos.', capa_url: '/capas/mod-cond-2.jpg', ordem: 1 },
-  { id: 'mod-cond-3', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 3, titulo: 'Conflitos de Interesse', descricao: 'Como identificar e lidar.', capa_url: '/capas/mod-cond-3.jpg', ordem: 2 },
-
-  // Trilha: Regras da DG (obrigatória) — vídeos "Regras da Casa" enviados pelo cliente
-  { id: 'mod-regras-casa-01', trilha_id: TRILHA_REGRAS_DG.id, numero: 1, titulo: 'Regras da Casa 01', descricao: 'Regras da Casa — parte 01.', capa_url: '/capas/mod-regras-1.jpg', ordem: 0 },
-  { id: 'mod-regras-casa-02', trilha_id: TRILHA_REGRAS_DG.id, numero: 2, titulo: 'Regras da Casa 02', descricao: 'Regras da Casa — parte 02.', capa_url: '/capas/mod-regras-2.jpg', ordem: 1 },
-  { id: 'mod-regras-casa-03', trilha_id: TRILHA_REGRAS_DG.id, numero: 3, titulo: 'Regras da Casa 03', descricao: 'Regras da Casa — parte 03.', capa_url: '/capas/mod-regras-3.jpg', ordem: 2 },
-  { id: 'mod-regras-casa-05', trilha_id: TRILHA_REGRAS_DG.id, numero: 4, titulo: 'Regras da Casa 05', descricao: 'Regras da Casa — parte 05.', capa_url: '/capas/mod-regras-1.jpg', ordem: 3 },
-  { id: 'mod-regras-casa-06', trilha_id: TRILHA_REGRAS_DG.id, numero: 5, titulo: 'Regras da Casa 06', descricao: 'Regras da Casa — parte 06.', capa_url: '/capas/mod-regras-2.jpg', ordem: 4 },
-  { id: 'mod-regras-casa-07', trilha_id: TRILHA_REGRAS_DG.id, numero: 6, titulo: 'Regras da Casa 07', descricao: 'Regras da Casa — parte 07.', capa_url: '/capas/mod-regras-3.jpg', ordem: 5 },
-  { id: 'mod-regras-casa-08', trilha_id: TRILHA_REGRAS_DG.id, numero: 7, titulo: 'Regras da Casa 08', descricao: 'Regras da Casa — parte 08.', capa_url: '/capas/mod-regras-1.jpg', ordem: 6 },
-  { id: 'mod-regras-casa-09', trilha_id: TRILHA_REGRAS_DG.id, numero: 8, titulo: 'Regras da Casa 09', descricao: 'Regras da Casa — parte 09.', capa_url: '/capas/mod-regras-2.jpg', ordem: 7 },
-  { id: 'mod-regras-casa-estacionamento', trilha_id: TRILHA_REGRAS_DG.id, numero: 9, titulo: 'Regras da Casa — Estacionamento', descricao: 'Regras de uso do estacionamento.', capa_url: '/capas/mod-regras-3.jpg', ordem: 8 },
+  { id: 'mod-cond-1', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 1, titulo: 'Ética e Integridade', descricao: 'Princípios éticos na DG Tech.', capa_url: '/capas/mod-cond-1.jpg', ordem: 10 },
+  { id: 'mod-cond-2', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 2, titulo: 'Respeito e Diversidade', descricao: 'Um ambiente inclusivo para todos.', capa_url: '/capas/mod-cond-2.jpg', ordem: 11 },
+  { id: 'mod-cond-3', trilha_id: TRILHA_CODIGOS_CONDUTA.id, numero: 3, titulo: 'Conflitos de Interesse', descricao: 'Como identificar e lidar.', capa_url: '/capas/mod-cond-3.jpg', ordem: 12 },
 ]
 
 export const AULAS: Aula[] = [
@@ -152,16 +147,16 @@ export const AULAS: Aula[] = [
   { id: 'aula-cond-2', modulo_id: 'mod-cond-2', titulo: 'Respeito e Diversidade', descricao: 'Construindo um ambiente inclusivo.', panda_video_id: null, duracao_seg: 250, ordem: 0 },
   { id: 'aula-cond-3', modulo_id: 'mod-cond-3', titulo: 'Conflitos de Interesse', descricao: 'Como identificar e reportar conflitos.', panda_video_id: null, duracao_seg: 200, ordem: 0 },
 
-  // Trilha: Regras da DG (obrigatória)
-  { id: 'aula-regras-casa-01', modulo_id: 'mod-regras-casa-01', titulo: 'Regras da Casa 01', descricao: null, panda_video_id: '05f5df67-bdfc-4315-a222-c9fbc218c5db', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-02', modulo_id: 'mod-regras-casa-02', titulo: 'Regras da Casa 02', descricao: null, panda_video_id: 'd9c93fbc-e7fc-4bad-b3b1-38dc33bb8413', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-03', modulo_id: 'mod-regras-casa-03', titulo: 'Regras da Casa 03', descricao: null, panda_video_id: 'e58237d8-e5f8-4c32-8f88-758357344203', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-05', modulo_id: 'mod-regras-casa-05', titulo: 'Regras da Casa 05', descricao: null, panda_video_id: '62cad896-ca1b-4d39-9be7-fc8ebe9067d5', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-06', modulo_id: 'mod-regras-casa-06', titulo: 'Regras da Casa 06', descricao: null, panda_video_id: '9babc5b1-a244-4726-88e5-bd6350d17c75', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-07', modulo_id: 'mod-regras-casa-07', titulo: 'Regras da Casa 07', descricao: null, panda_video_id: 'a7adf4ee-f190-452e-bf4e-475914bc5e28', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-08', modulo_id: 'mod-regras-casa-08', titulo: 'Regras da Casa 08', descricao: null, panda_video_id: '226431db-c081-4a76-80a1-488039dcca8a', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-09', modulo_id: 'mod-regras-casa-09', titulo: 'Regras da Casa 09', descricao: null, panda_video_id: '06998c7a-955c-4b63-83dd-d5ef085e920f', duracao_seg: 180, ordem: 0 },
-  { id: 'aula-regras-casa-estacionamento', modulo_id: 'mod-regras-casa-estacionamento', titulo: 'Regras da Casa — Estacionamento', descricao: null, panda_video_id: 'cf807870-c28c-408d-80d8-b792ccde0db6', duracao_seg: 180, ordem: 0 },
+  // Trilha: Integração DG Tech — playlist do módulo "Regras da Casa" (sempre_disponivel)
+  { id: 'aula-regras-casa-01', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 01', descricao: null, panda_video_id: '05f5df67-bdfc-4315-a222-c9fbc218c5db', duracao_seg: 180, ordem: 0 },
+  { id: 'aula-regras-casa-02', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 02', descricao: null, panda_video_id: 'd9c93fbc-e7fc-4bad-b3b1-38dc33bb8413', duracao_seg: 180, ordem: 1 },
+  { id: 'aula-regras-casa-03', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 03', descricao: null, panda_video_id: 'e58237d8-e5f8-4c32-8f88-758357344203', duracao_seg: 180, ordem: 2 },
+  { id: 'aula-regras-casa-05', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 05', descricao: null, panda_video_id: '62cad896-ca1b-4d39-9be7-fc8ebe9067d5', duracao_seg: 180, ordem: 3 },
+  { id: 'aula-regras-casa-06', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 06', descricao: null, panda_video_id: '9babc5b1-a244-4726-88e5-bd6350d17c75', duracao_seg: 180, ordem: 4 },
+  { id: 'aula-regras-casa-07', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 07', descricao: null, panda_video_id: 'a7adf4ee-f190-452e-bf4e-475914bc5e28', duracao_seg: 180, ordem: 5 },
+  { id: 'aula-regras-casa-08', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 08', descricao: null, panda_video_id: '226431db-c081-4a76-80a1-488039dcca8a', duracao_seg: 180, ordem: 6 },
+  { id: 'aula-regras-casa-09', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 09', descricao: null, panda_video_id: '06998c7a-955c-4b63-83dd-d5ef085e920f', duracao_seg: 180, ordem: 7 },
+  { id: 'aula-regras-casa-estacionamento', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa — Estacionamento', descricao: null, panda_video_id: 'cf807870-c28c-408d-80d8-b792ccde0db6', duracao_seg: 180, ordem: 8 },
 ]
 
 /** Questões do protótipo. As definitivas vêm do Danilo (prometidas seg/ter). */
@@ -458,195 +453,42 @@ export const QUESTOES: Questao[] = [
     feedback: 'Decisão enviesada por interesse pessoal é o tipo de risco que corrói a confiança de dentro pra fora.',
   },
 
-  // Trilha Regras da DG — "Regras da Casa" (questões provisórias, aguardando roteiro definitivo do cliente)
+  // Trilha: Integração DG Tech — quiz único do módulo "Regras da Casa" (questões
+  // provisórias, aguardando roteiro definitivo do cliente)
   {
-    id: 'q-regras-casa-01-1', modulo_id: 'mod-regras-casa-01', ordem: 0, pontos: 30,
+    id: 'q-regras-casa-1', modulo_id: 'mod-regras-casa', ordem: 0, pontos: 30,
     enunciado: 'Qual é o objetivo das "Regras da Casa" da DG Tech?',
     alternativas: ['Burocratizar o trabalho sem necessidade', 'Estabelecer um padrão claro de convivência e organização para todos', 'Substituir o bom senso completamente', 'Só existem no papel, sem uso prático'],
     indice_correto: 1,
     feedback: 'A regra existe pra todo mundo saber o que esperar do outro, sem depender de interpretação individual.',
   },
   {
-    id: 'q-regras-casa-01-2', modulo_id: 'mod-regras-casa-01', ordem: 1, pontos: 30,
+    id: 'q-regras-casa-2', modulo_id: 'mod-regras-casa', ordem: 1, pontos: 30,
     enunciado: 'Ao ver uma regra da casa sendo descumprida, qual a atitude esperada?',
     alternativas: ['Ignorar, não é problema seu', 'Comunicar de forma respeitosa e, se necessário, reportar ao gestor', 'Repreender publicamente o colega', 'Copiar o comportamento já que ninguém cobra'],
     indice_correto: 1,
     feedback: 'Regra descumprida se resolve com comunicação direta e respeitosa — não com silêncio nem com confronto público.',
   },
   {
-    id: 'q-regras-casa-01-3', modulo_id: 'mod-regras-casa-01', ordem: 2, pontos: 30,
-    enunciado: 'As Regras da Casa valem para...',
-    alternativas: ['Só quem está há pouco tempo na empresa', 'Todos os colaboradores, sem exceção de cargo ou tempo de casa', 'Só o time operacional', 'Apenas quando o gestor está presente'],
-    indice_correto: 1,
-    feedback: 'Padrão de convivência só funciona se valer igual para todo mundo, sem exceção.',
-  },
-  {
-    id: 'q-regras-casa-02-1', modulo_id: 'mod-regras-casa-02', ordem: 0, pontos: 30,
+    id: 'q-regras-casa-3', modulo_id: 'mod-regras-casa', ordem: 2, pontos: 30,
     enunciado: 'Por que cumprir horários é importante na DG Tech?',
     alternativas: ['Porque é só uma formalidade', 'Porque impacta diretamente a equipe e o cronograma do trabalho', 'Só importa em datas de auditoria', 'Não tem relação com o resultado do time'],
     indice_correto: 1,
     feedback: 'Atraso de um afeta o cronograma de todos — pontualidade é trabalho em equipe.',
   },
   {
-    id: 'q-regras-casa-02-2', modulo_id: 'mod-regras-casa-02', ordem: 1, pontos: 30,
-    enunciado: 'Em caso de atraso inevitável, o que fazer?',
-    alternativas: ['Não avisar e chegar quando der', 'Avisar o gestor com antecedência, assim que possível', 'Esperar alguém perguntar', 'Justificar só se for cobrado depois'],
+    id: 'q-regras-casa-4', modulo_id: 'mod-regras-casa', ordem: 3, pontos: 30,
+    enunciado: 'Equipamentos e áreas comuns são de uso compartilhado. O que isso pede de cada um?',
+    alternativas: ['Nada — quem limpa é outra equipe', 'Zelo: devolver e deixar organizado para o próximo colaborador usar', 'Uso livre, sem necessidade de cuidado extra', 'Só importa se o gestor estiver por perto'],
     indice_correto: 1,
-    feedback: 'Aviso antecipado permite o time se reorganizar — silêncio só transfere o problema pra depois.',
+    feedback: 'Espaço e equipamento de todos só funcionam bem se cada um cuidar como se fosse seu.',
   },
   {
-    id: 'q-regras-casa-02-3', modulo_id: 'mod-regras-casa-02', ordem: 2, pontos: 30,
-    enunciado: 'Chegar atrasado com frequência é...',
-    alternativas: ['Normal, desde que o trabalho saia', 'Um problema que deve ser resolvido em conversa direta com o gestor', 'Problema só se afetar prazo de entrega', 'Algo que só o RH deveria notar'],
-    indice_correto: 1,
-    feedback: 'Padrão de atraso pede conversa franca com o gestor antes de virar hábito.',
-  },
-  {
-    id: 'q-regras-casa-03-1', modulo_id: 'mod-regras-casa-03', ordem: 0, pontos: 30,
-    enunciado: 'Por que usar o crachá é obrigatório dentro da DG?',
-    alternativas: ['É só estética', 'Para identificação e segurança de todos no ambiente de trabalho', 'Só é exigido em datas especiais', 'Não tem função real'],
-    indice_correto: 1,
-    feedback: 'Crachá identifica quem está no ambiente e protege quem trabalha ali.',
-  },
-  {
-    id: 'q-regras-casa-03-2', modulo_id: 'mod-regras-casa-03', ordem: 1, pontos: 30,
-    enunciado: 'Se você perder o crachá, o que fazer?',
-    alternativas: ['Esperar encontrar de novo', 'Avisar imediatamente o setor responsável para emitir uma via nova', 'Pedir emprestado o de um colega', 'Não é preciso avisar ninguém'],
-    indice_correto: 1,
-    feedback: 'Crachá perdido é risco de segurança — quanto antes avisar, antes se resolve.',
-  },
-  {
-    id: 'q-regras-casa-03-3', modulo_id: 'mod-regras-casa-03', ordem: 2, pontos: 30,
-    enunciado: 'Emprestar o crachá para outra pessoa é...',
-    alternativas: ['Aceitável entre colegas próximos', 'Proibido — o crachá é pessoal e intransferível', 'Permitido só por um dia', 'Uma decisão do próprio colaborador'],
-    indice_correto: 1,
-    feedback: 'Crachá emprestado quebra o próprio motivo dele existir: identificar quem é quem.',
-  },
-  {
-    id: 'q-regras-casa-05-1', modulo_id: 'mod-regras-casa-05', ordem: 0, pontos: 30,
-    enunciado: 'Como devem ficar as áreas comuns depois do uso?',
-    alternativas: ['Do jeito que ficou, alguém organiza depois', 'Organizadas e limpas, prontas para o próximo colaborador usar', 'Só precisa organizar no fim do dia', 'Não é responsabilidade de quem usou'],
-    indice_correto: 1,
-    feedback: 'Área comum só funciona bem se cada um deixar como gostaria de encontrar.',
-  },
-  {
-    id: 'q-regras-casa-05-2', modulo_id: 'mod-regras-casa-05', ordem: 1, pontos: 30,
-    enunciado: 'Objetos pessoais deixados em áreas comuns...',
-    alternativas: ['Podem ficar ali indefinidamente', 'Devem ser guardados — área comum não é depósito pessoal', 'São de responsabilidade de quem limpa', 'Só incomodam se alguém reclamar'],
-    indice_correto: 1,
-    feedback: 'Espaço compartilhado exige que cada um cuide do que é seu, sem ocupar o espaço do time.',
-  },
-  {
-    id: 'q-regras-casa-05-3', modulo_id: 'mod-regras-casa-05', ordem: 2, pontos: 30,
-    enunciado: 'O uso das áreas comuns é...',
-    alternativas: ['Individual, cada um usa como quiser', 'Compartilhado, e por isso pede respeito ao espaço dos colegas', 'Restrito a quem chegou primeiro', 'Sem nenhuma regra definida'],
-    indice_correto: 1,
-    feedback: 'Espaço de todos pede o cuidado de todos — não é sobre quem chegou primeiro.',
-  },
-  {
-    id: 'q-regras-casa-06-1', modulo_id: 'mod-regras-casa-06', ordem: 0, pontos: 30,
-    enunciado: 'Antes de usar um equipamento compartilhado, o que verificar?',
-    alternativas: ['Nada, é só pegar e usar', 'Se está em condições de uso e se há reserva de outro colaborador', 'Só se está ligado', 'Se alguém está por perto para perguntar'],
-    indice_correto: 1,
-    feedback: 'Checar condição e reserva evita atraso e retrabalho pra você e pro colega seguinte.',
-  },
-  {
-    id: 'q-regras-casa-06-2', modulo_id: 'mod-regras-casa-06', ordem: 1, pontos: 30,
-    enunciado: 'Um equipamento apresenta defeito durante o uso. O que fazer?',
-    alternativas: ['Continuar usando até terminar a tarefa', 'Parar o uso, sinalizar o problema e informar o responsável', 'Tentar consertar por conta própria', 'Deixar para o próximo perceber sozinho'],
-    indice_correto: 1,
-    feedback: 'Defeito não reportado vira risco pro próximo que usar o equipamento sem saber.',
-  },
-  {
-    id: 'q-regras-casa-06-3', modulo_id: 'mod-regras-casa-06', ordem: 2, pontos: 30,
-    enunciado: 'Equipamentos da empresa podem ser levados para uso pessoal fora do expediente?',
-    alternativas: ['Sim, sem restrição', 'Não, sem autorização formal do gestor', 'Sim, desde que devolvido no dia seguinte', 'Depende do valor do equipamento'],
-    indice_correto: 1,
-    feedback: 'Uso pessoal sem autorização expõe o equipamento e a empresa a risco desnecessário.',
-  },
-  {
-    id: 'q-regras-casa-07-1', modulo_id: 'mod-regras-casa-07', ordem: 0, pontos: 30,
-    enunciado: 'Qual comportamento é esperado durante reuniões internas?',
-    alternativas: ['Chegar quando der e sair quando quiser', 'Pontualidade, atenção e participação respeitosa', 'Só ouvir, sem participar', 'Participar apenas se o assunto interessar'],
-    indice_correto: 1,
-    feedback: 'Reunião produtiva depende de quem está nela estar realmente presente.',
-  },
-  {
-    id: 'q-regras-casa-07-2', modulo_id: 'mod-regras-casa-07', ordem: 1, pontos: 30,
-    enunciado: 'Discordar de uma decisão em reunião deve ser feito...',
-    alternativas: ['Em silêncio, reclamando depois com outro colega', 'De forma direta e respeitosa, no momento certo da discussão', 'Só por mensagem depois da reunião', 'Nunca — decisão de reunião não se questiona'],
-    indice_correto: 1,
-    feedback: 'Discordância resolvida na hora, com respeito, evita ruído e retrabalho depois.',
-  },
-  {
-    id: 'q-regras-casa-07-3', modulo_id: 'mod-regras-casa-07', ordem: 2, pontos: 30,
-    enunciado: 'Usar o celular para assuntos pessoais durante reuniões é...',
-    alternativas: ['Normal, todo mundo faz', 'Desaconselhado — tira o foco da equipe e do assunto tratado', 'Aceitável se for rápido', 'Só um problema se o gestor perceber'],
-    indice_correto: 1,
-    feedback: 'Atenção dividida em reunião custa tempo do time inteiro, não só o seu.',
-  },
-  {
-    id: 'q-regras-casa-08-1', modulo_id: 'mod-regras-casa-08', ordem: 0, pontos: 30,
-    enunciado: 'Qual é o canal correto para comunicar um problema urgente?',
-    alternativas: ['Qualquer conversa informal que surgir', 'O canal oficial definido pela equipe ou gestor', 'Rede social pessoal', 'Só por meio de terceiros'],
-    indice_correto: 1,
-    feedback: 'Canal oficial garante que a informação chegue e fique registrada — conversa solta se perde.',
-  },
-  {
-    id: 'q-regras-casa-08-2', modulo_id: 'mod-regras-casa-08', ordem: 1, pontos: 30,
-    enunciado: 'Uma informação importante deve ser registrada por escrito porque...',
-    alternativas: ['É só uma formalidade sem função real', 'Evita mal-entendido e serve de referência futura', 'Deixa tudo mais lento sem necessidade', 'Só interessa ao gestor'],
-    indice_correto: 1,
-    feedback: 'Registro escrito é o que sobra quando a memória de todo mundo já esqueceu o combinado.',
-  },
-  {
-    id: 'q-regras-casa-08-3', modulo_id: 'mod-regras-casa-08', ordem: 2, pontos: 30,
-    enunciado: 'Reclamações sobre colegas de trabalho devem ser tratadas...',
-    alternativas: ['Em grupo, para todo mundo saber', 'Diretamente com o gestor responsável, de forma confidencial', 'Ignoradas até virar um problema maior', 'Resolvidas por conta própria, sem envolver ninguém'],
-    indice_correto: 1,
-    feedback: 'Assunto sensível pede canal confidencial — não exposição nem silêncio.',
-  },
-  {
-    id: 'q-regras-casa-09-1', modulo_id: 'mod-regras-casa-09', ordem: 0, pontos: 30,
-    enunciado: 'O uso do uniforme e dos EPIs corretos é...',
-    alternativas: ['Opcional, depende do dia', 'Obrigatório, para segurança e identificação no ambiente de trabalho', 'Só necessário em vistoria', 'Uma escolha pessoal de cada colaborador'],
-    indice_correto: 1,
-    feedback: 'EPI e uniforme não são estética — são proteção obrigatória.',
-  },
-  {
-    id: 'q-regras-casa-09-2', modulo_id: 'mod-regras-casa-09', ordem: 1, pontos: 30,
-    enunciado: 'Um EPI danificado deve ser...',
-    alternativas: ['Usado até quebrar de vez', 'Substituído imediatamente, nunca usado com defeito', 'Consertado com fita ou improviso', 'Reportado só se causar acidente'],
-    indice_correto: 1,
-    feedback: 'EPI com defeito não protege — usar assim é assumir um risco que não precisa existir.',
-  },
-  {
-    id: 'q-regras-casa-09-3', modulo_id: 'mod-regras-casa-09', ordem: 2, pontos: 30,
-    enunciado: 'Não usar o EPI exigido para a função...',
-    alternativas: ['É só uma infração burocrática', 'Coloca em risco a segurança do colaborador e pode gerar advertência', 'Só importa se alguém se machucar', 'É problema apenas em obras grandes'],
-    indice_correto: 1,
-    feedback: 'A regra existe antes do acidente acontecer — é isso que a torna séria.',
-  },
-  {
-    id: 'q-regras-casa-estacionamento-1', modulo_id: 'mod-regras-casa-estacionamento', ordem: 0, pontos: 30,
-    enunciado: 'As vagas do estacionamento da DG Tech são...',
-    alternativas: ['Livres, cada um usa a que quiser', 'De uso compartilhado, respeitando sinalização e vagas reservadas', 'Por ordem de chegada, sem exceção', 'Definidas só por cargo'],
-    indice_correto: 1,
-    feedback: 'Sinalização e reserva existem pra evitar exatamente o conflito de "cada um usa a que quiser".',
-  },
-  {
-    id: 'q-regras-casa-estacionamento-2', modulo_id: 'mod-regras-casa-estacionamento', ordem: 1, pontos: 30,
-    enunciado: 'Ao estacionar, o que deve ser evitado?',
+    id: 'q-regras-casa-5', modulo_id: 'mod-regras-casa', ordem: 4, pontos: 30,
+    enunciado: 'No estacionamento, o que deve ser evitado?',
     alternativas: ['Estacionar de ré', 'Bloquear a saída de outros veículos ou ocupar vaga reservada sem autorização', 'Usar vaga próxima à entrada', 'Estacionar antes das 8h'],
     indice_correto: 1,
     feedback: 'Bloquear saída ou ocupar vaga reservada transforma um problema seu no problema de todo mundo.',
-  },
-  {
-    id: 'q-regras-casa-estacionamento-3', modulo_id: 'mod-regras-casa-estacionamento', ordem: 2, pontos: 30,
-    enunciado: 'Em caso de vaga reservada ocupada por outro veículo, o que fazer?',
-    alternativas: ['Bater no vidro e resolver ali mesmo', 'Comunicar a portaria ou o setor responsável, sem confronto direto', 'Estacionar em cima, forçando a saída', 'Ignorar e procurar outra vaga sempre'],
-    indice_correto: 1,
-    feedback: 'Conflito de vaga se resolve pelo canal responsável — confronto direto só piora.',
   },
 ]
 

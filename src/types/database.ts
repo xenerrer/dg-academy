@@ -63,6 +63,8 @@ export interface Modulo {
   descricao: string | null
   capa_url: string | null
   ordem: number
+  /** Ignora a trava sequencial: fica sempre acessível, independente do progresso. */
+  sempre_disponivel?: boolean
 }
 
 export interface Aula {
@@ -150,8 +152,10 @@ export interface ProgressoColaborador {
 /**
  * Estado derivado de um módulo para a interface.
  * Não existe no banco — é calculado a partir de conclusoes_modulo.
+ * 'disponivel': módulo com sempre_disponivel=true, não concluído — acessível
+ * mas não é "a etapa atual" da trilha sequencial.
  */
-export type StatusModulo = 'concluido' | 'atual' | 'bloqueado'
+export type StatusModulo = 'concluido' | 'atual' | 'bloqueado' | 'disponivel'
 
 /** View vw_ranking_colaborador */
 export interface RankingColaborador {

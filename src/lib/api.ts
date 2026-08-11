@@ -27,7 +27,6 @@ import {
   TRILHA,
   TRILHA_MISSAO_VISAO_VALORES,
   TRILHA_CODIGOS_CONDUTA,
-  TRILHA_REGRAS_DG,
   USUARIO_ATUAL,
 } from '@/mocks/dados'
 import type {
@@ -75,16 +74,12 @@ export async function obterTrilha() {
 
 /**
  * Lista todas as trilhas que um usuário deve ver:
- * - 3 trilhas obrigatórias (Missão/Visão/Valores, Códigos, Regras)
- * - A trilha de integração (por setor do usuário, ou geral)
+ * - 2 trilhas obrigatórias (Missão/Visão/Valores, Códigos de Conduta)
+ * - A trilha de integração (por setor do usuário, ou geral) — "Regras da Casa"
+ *   vive dentro dela como módulo, não como trilha separada.
  */
 export async function listarTrilhasDoUsuario(): Promise<Trilha[]> {
-  const trilhas: Trilha[] = [
-    TRILHA_MISSAO_VISAO_VALORES,
-    TRILHA_CODIGOS_CONDUTA,
-    TRILHA_REGRAS_DG,
-    TRILHA,
-  ]
+  const trilhas: Trilha[] = [TRILHA_MISSAO_VISAO_VALORES, TRILHA_CODIGOS_CONDUTA, TRILHA]
   // Ordenar por ordem (as obrigatórias vêm primeiro)
   return atraso(trilhas.sort((a, b) => a.ordem - b.ordem))
 }
@@ -101,8 +96,9 @@ export async function obterModulo(moduloId: string) {
   return atraso(MODULOS.find((m) => m.id === moduloId) ?? null)
 }
 
-export async function obterAulaDoModulo(moduloId: string) {
-  return atraso(AULAS.find((a) => a.modulo_id === moduloId) ?? null)
+/** Aulas de um módulo, em ordem. A maioria dos módulos tem 1 só; "Regras da Casa" tem 9 (playlist). */
+export async function listarAulasDoModulo(moduloId: string) {
+  return atraso(AULAS.filter((a) => a.modulo_id === moduloId).sort((a, b) => a.ordem - b.ordem))
 }
 
 export async function listarQuestoes(moduloId: string) {
@@ -130,9 +126,13 @@ export async function listarColaboradores() {
  *
  * Derivado das conclusões, nunca guardado. O primeiro módulo não concluído é o
  * atual; os seguintes ficam bloqueados. É a mesma regra que o banco vai aplicar.
+ *
+ * Módulos com sempre_disponivel (ex.: "Regras da Casa") ficam fora dessa
+ * escada: nunca bloqueiam nem são bloqueados, e não disputam o posto de
+ * "atual" com o próximo módulo sequencial de verdade.
  */
 export function calcularStatusModulos(
-  modulos: { id: string }[],
+  modulos: { id: string; sempre_disponivel?: boolean }[],
   conclusoes: { modulo_id: string }[],
 ): Record<string, StatusModulo> {
   const concluidos = new Set(conclusoes.map((c) => c.modulo_id))
@@ -141,6 +141,8 @@ export function calcularStatusModulos(
   return modulos.reduce<Record<string, StatusModulo>>((acc, modulo) => {
     if (concluidos.has(modulo.id)) {
       acc[modulo.id] = 'concluido'
+    } else if (modulo.sempre_disponivel) {
+      acc[modulo.id] = 'disponivel'
     } else if (!achouAtual) {
       acc[modulo.id] = 'atual'
       achouAtual = true
@@ -270,4 +272,39 @@ export async function criarComentario(dados: { aula_id: string; texto: string })
   }
 
   return atraso(novo, 300)
+}
+
+// ── Playlist de aulas dentro de um módulo (overlay de sessão) ──────────────
+// Módulos com mais de 1 aula (hoje só "Regras da Casa") mostram uma playlist:
+// cada vídeo assistido até o fim entra aqui. O quiz do módulo só libera quando
+// todas as aulas do módulo estiverem nesta lista.
+//
+// Quando o Supabase entrar, marcarAulaAssistida vira um UPDATE em
+// progresso_aula (concluida_em) e listarAulasAssistidas um SELECT — este
+// overlay some, sem tocar em componente.
+
+const CHAVE_AULAS_ASSISTIDAS_SESSAO = 'dg-aulas-assistidas-sessao'
+
+function lerAulasAssistidasDaSessao(): string[] {
+  try {
+    const dado = JSON.parse(sessionStorage.getItem(CHAVE_AULAS_ASSISTIDAS_SESSAO) ?? '[]')
+    return Array.isArray(dado) ? dado : []
+  } catch {
+    return []
+  }
+}
+
+export async function listarAulasAssistidas(): Promise<string[]> {
+  return atraso(lerAulasAssistidasDaSessao(), 80)
+}
+
+export async function marcarAulaAssistida(aulaId: string): Promise<void> {
+  const existentes = lerAulasAssistidasDaSessao()
+  if (existentes.includes(aulaId)) return
+  existentes.push(aulaId)
+  try {
+    sessionStorage.setItem(CHAVE_AULAS_ASSISTIDAS_SESSAO, JSON.stringify(existentes))
+  } catch {
+    // storage indisponível — a marcação só não sobrevive ao reload
+  }
 }

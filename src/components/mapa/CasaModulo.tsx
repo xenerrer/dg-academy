@@ -77,7 +77,13 @@ export function CasaModulo({
         animate={celebrar && !reduzir ? { scale: [1, 1.18, 1] } : { scale: 1 }}
         transition={{ duration: 0.5 }}
         aria-label={`Módulo ${modulo.numero} — ${modulo.titulo} (${
-          status === 'concluido' ? 'energizado' : status === 'atual' ? 'atual' : 'bloqueado'
+          status === 'concluido'
+            ? 'energizado'
+            : status === 'atual'
+              ? 'atual'
+              : status === 'disponivel'
+                ? 'disponível'
+                : 'bloqueado'
         })`}
         aria-disabled={bloqueada}
         // scroll-margin: foco por teclado não revela a casa rente à borda,
@@ -87,6 +93,7 @@ export function CasaModulo({
           status === 'concluido' &&
             'border-dg-yellow bg-dg-yellow shadow-[0_0_28px_rgba(255,218,0,0.35)]',
           status === 'atual' && 'border-dg-yellow bg-dg-card2',
+          status === 'disponivel' && 'border-dg-yellow/40 bg-dg-card2',
           bloqueada && 'border-dg-line bg-dg-card opacity-60',
           tremendo && 'animate-shake motion-reduce:animate-none',
         )}
@@ -117,6 +124,7 @@ export function CasaModulo({
           rotuloADireita ? 'left-[76px] text-left' : 'right-[76px] text-right',
           status === 'concluido' && 'text-dg-text',
           status === 'atual' && 'text-dg-yellow',
+          status === 'disponivel' && 'text-dg-text',
           bloqueada && 'text-dg-muted',
         )}
       >

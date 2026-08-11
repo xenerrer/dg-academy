@@ -20,12 +20,7 @@ import { Input } from '@/components/ui/input'
  * Trilhas que toda pessoa recebe, qualquer que seja o setor. No banco são as
  * trilhas sem vínculo em trilha_setores — por isso ficam visíveis a todos.
  */
-const TRILHAS_PADRAO = [
-  'Integração DG',
-  'Missão, visão e valores',
-  'Códigos de conduta',
-  'Regras da DG',
-]
+const TRILHAS_PADRAO = ['Integração DG (com Regras da Casa)', 'Missão, visão e valores', 'Códigos de conduta']
 
 const SETORES = [
   {
