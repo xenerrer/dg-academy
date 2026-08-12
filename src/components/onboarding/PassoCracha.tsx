@@ -36,7 +36,7 @@ export function PassoCracha({ nome, fotoUrl, onFoto, onAvancar }: PassoCrachaPro
   return (
     <TelaVertical
       passo={0}
-      totalPassos={3}
+      totalPassos={2}
       comBackdrop
       acoes={
         <>

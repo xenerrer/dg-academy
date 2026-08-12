@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check, HardHat, Calculator, Building2, UserPlus } from 'lucide-react'
+import {
+  Check,
+  HardHat,
+  Calculator,
+  Building2,
+  BadgeCheck,
+  Warehouse,
+  ShieldAlert,
+  Users,
+  UserPlus,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,21 +35,90 @@ const TRILHAS_PADRAO = ['Integração DG (com Regras da Casa)', 'Missão, visão
 const SETORES = [
   {
     id: 'setor-campo',
-    nome: 'Engenharia de Campo',
+    nome: 'Obras',
     icone: HardHat,
-    treinamentos: ['NR-10 — Segurança em eletricidade', 'EPIs e procedimentos de obra', 'Ferramentas e instalações'],
+    treinamentos: [
+      'NR10 e todas as normas pertinentes ao seu trabalho em campo',
+      'EPIs e procedimentos de obra',
+      'Ferramentas e instalações',
+      'Padrão de qualidade DG Tech em obras',
+      'Acesso ao Acura',
+      'Acesso ao Kaizen',
+      'Solicitação correta de lista de material',
+    ],
   },
   {
     id: 'setor-orcamentos',
     nome: 'Orçamentos',
     icone: Calculator,
-    treinamentos: ['Levantamento e composição de custos', 'Normas técnicas aplicadas a orçamento', 'Relacionamento com o cliente'],
+    treinamentos: [
+      'Levantamento e composição de custos',
+      'Normas técnicas aplicadas a orçamento',
+      'Relacionamento com o cliente',
+      'Acesso ao Acura',
+      'Acesso ao Kaizen',
+      'Como fazer um orçamento padrão DG Tech',
+    ],
   },
   {
     id: 'setor-adm',
     nome: 'Administrativo',
     icone: Building2,
-    treinamentos: ['Processos internos e sistemas', 'Atendimento e comunicação'],
+    treinamentos: [
+      'Cultura e Políticas',
+      'Integração',
+      'Gestão Documental',
+      'Gestão Contratual',
+      'Gerenciamento de Sistemas Terceiros',
+      'Gestão de Patrimônio',
+      'Endomarketing',
+      'Suporte Financeiro',
+    ],
+  },
+  {
+    id: 'setor-qualidade',
+    nome: 'Qualidade',
+    icone: BadgeCheck,
+    treinamentos: ['Acesso ao Acura', 'Acesso ao Kaizen', 'Funções e atribuições do Eng. de Qualidade'],
+  },
+  {
+    id: 'setor-suprimentos',
+    nome: 'Suprimentos',
+    icone: Warehouse,
+    treinamentos: [
+      'Acesso ao Acura',
+      'Acesso ao Kaizen',
+      'Como realizar uma correta solicitação de orçamento aos nossos parceiros',
+      'Conferência e double check na lista de material',
+      'Organização do depósito',
+      'Organização e separação do material do depósito para envio para obra',
+      'Logística e entrega do material em obras',
+    ],
+  },
+  {
+    id: 'setor-tst',
+    nome: 'TST',
+    icone: ShieldAlert,
+    treinamentos: [
+      'Normas gerais',
+      'NR01 e demais normas relacionadas à DG Tech',
+      'Como se portar em uma obra DG Tech',
+      'O papel do TST na DG Tech — responsabilidade em obras',
+    ],
+  },
+  {
+    id: 'setor-dp',
+    nome: 'DP',
+    icone: Users,
+    treinamentos: [
+      'Cultura e Políticas',
+      'Integração',
+      'Ciclo do Colaborador',
+      'Gestão Documental',
+      'Gestão Contratual',
+      'Atendimento ao Colaborador',
+      'Recrutamento',
+    ],
   },
 ]
 

@@ -11,12 +11,6 @@
 
 export type PapelUsuario = 'colaborador' | 'gestor' | 'admin'
 
-/**
- * Autodeclarado no primeiro acesso. Afeta tom das mensagens e ordem do
- * conteúdo opcional — nunca o conteúdo obrigatório.
- */
-export type NivelExperiencia = 'iniciante' | 'intermediario' | 'veterano'
-
 export interface Tenant {
   id: string
   nome: string
@@ -41,7 +35,6 @@ export interface Profile {
   setor_id: string | null
   foto_url: string | null
   papel: PapelUsuario
-  nivel_experiencia: NivelExperiencia | null
   onboarding_concluido_em: string | null
   criado_em: string
 }

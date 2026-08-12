@@ -40,7 +40,7 @@ export function PassoConfirmacao({
   return (
     <TelaVertical
       passo={1}
-      totalPassos={3}
+      totalPassos={2}
       acoes={
         <>
           <Button size="lg" className="h-14 w-full" onClick={onConfirmar}>

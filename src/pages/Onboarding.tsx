@@ -4,11 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 import { listarSetores, obterUsuarioAtual, salvarOnboarding } from '@/lib/api'
 import { PassoCracha } from '@/components/onboarding/PassoCracha'
 import { PassoConfirmacao } from '@/components/onboarding/PassoConfirmacao'
-import { PassoNivel } from '@/components/onboarding/PassoNivel'
-import type { NivelExperiencia } from '@/types/database'
 
 /**
- * Primeiro acesso — 3 passos, menos de 60 segundos até a primeira aula.
+ * Primeiro acesso — 2 passos, menos de 60 segundos até a primeira aula.
  *
  * Princípio (docs/09-ONBOARDING-E-UX.md §2): nada é explicado antes de ser
  * necessário. Aqui não há tour, não há tela de "conheça os recursos" e não há
@@ -24,7 +22,6 @@ export default function Onboarding() {
   const navigate = useNavigate()
   const [passo, setPasso] = useState(0)
   const [fotoUrl, setFotoUrl] = useState<string | null>(null)
-  const [nivel, setNivel] = useState<NivelExperiencia | null>(null)
 
   const { data: usuario } = useQuery({ queryKey: ['usuario'], queryFn: obterUsuarioAtual })
   const { data: setores = [] } = useQuery({ queryKey: ['setores'], queryFn: listarSetores })
@@ -36,7 +33,7 @@ export default function Onboarding() {
   const setor = setores.find((s) => s.id === usuario.setor_id)?.nome ?? 'Não definido'
 
   async function concluir() {
-    await salvarOnboarding({ foto_url: fotoUrl, nivel_experiencia: nivel })
+    await salvarOnboarding({ foto_url: fotoUrl })
     navigate('/')
   }
 
@@ -51,18 +48,14 @@ export default function Onboarding() {
     )
   }
 
-  if (passo === 1) {
-    return (
-      <PassoConfirmacao
-        nome={usuario.nome}
-        cargo={usuario.cargo ?? 'Não definido'}
-        setor={setor}
-        fotoUrl={fotoUrl}
-        onConfirmar={() => setPasso(2)}
-        onCorrigir={() => setPasso(0)}
-      />
-    )
-  }
-
-  return <PassoNivel selecionado={nivel} onSelecionar={setNivel} onConcluir={concluir} />
+  return (
+    <PassoConfirmacao
+      nome={usuario.nome}
+      cargo={usuario.cargo ?? 'Não definido'}
+      setor={setor}
+      fotoUrl={fotoUrl}
+      onConfirmar={concluir}
+      onCorrigir={() => setPasso(0)}
+    />
+  )
 }

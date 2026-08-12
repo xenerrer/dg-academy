@@ -32,7 +32,6 @@ import {
 import type {
   Comentario,
   ConclusaoModulo,
-  NivelExperiencia,
   Profile,
   StatusModulo,
   Trilha,
@@ -228,10 +227,7 @@ export async function listarConclusoesSemana() {
 //         .eq('id', user.id)
 // A foto sobe antes para o Storage; foto_url guarda o caminho, não o base64.
 
-export async function salvarOnboarding(dados: {
-  foto_url: string | null
-  nivel_experiencia: NivelExperiencia | null
-}) {
+export async function salvarOnboarding(dados: { foto_url: string | null }) {
   return atraso(dados, 400)
 }
 

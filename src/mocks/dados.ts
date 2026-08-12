@@ -36,10 +36,13 @@ export const TENANT: Tenant = {
 }
 
 export const SETORES: Setor[] = [
-  { id: 'setor-campo', tenant_id: TENANT_ID, nome: 'Engenharia de Campo' },
+  { id: 'setor-campo', tenant_id: TENANT_ID, nome: 'Obras' },
   { id: 'setor-orcamentos', tenant_id: TENANT_ID, nome: 'Orçamentos' },
   { id: 'setor-adm', tenant_id: TENANT_ID, nome: 'Administrativo' },
-  { id: 'setor-fornecedores', tenant_id: TENANT_ID, nome: 'Fornecedores' },
+  { id: 'setor-qualidade', tenant_id: TENANT_ID, nome: 'Qualidade' },
+  { id: 'setor-suprimentos', tenant_id: TENANT_ID, nome: 'Suprimentos' },
+  { id: 'setor-tst', tenant_id: TENANT_ID, nome: 'TST' },
+  { id: 'setor-dp', tenant_id: TENANT_ID, nome: 'DP' },
 ]
 
 export const USUARIO_ATUAL: Profile = {
@@ -51,7 +54,6 @@ export const USUARIO_ATUAL: Profile = {
   setor_id: 'setor-campo',
   foto_url: null,
   papel: 'colaborador',
-  nivel_experiencia: null,
   onboarding_concluido_em: null,
   criado_em: '2026-07-10T00:00:00Z',
 }

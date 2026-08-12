@@ -9,8 +9,7 @@ interface CartaoExtra {
  * As capas são imagens geradas no estilo DG (escuro + âmbar, tema de campo).
  *
  * Grid uniforme: todos os cards têm a mesma altura (align stretch) e a mesma
- * capa 16:9 — padrão consistente. A ordem pode variar por nivel_experiencia
- * no futuro; aqui é fixa.
+ * capa 16:9 — padrão consistente. A ordem é fixa.
  */
 const CARTOES: CartaoExtra[] = [
   {
