@@ -65,9 +65,30 @@ export default function App() {
             <Route path="/mapa/animado" element={<ProtectedRoute><MapaAnimado /></ProtectedRoute>} />
             <Route path="/aula/:moduloId" element={<ProtectedRoute><Aula /></ProtectedRoute>} />
             <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
-            <Route path="/gestao" element={<ProtectedRoute><GestaoPainel /></ProtectedRoute>} />
-            <Route path="/gestao/colaboradores" element={<ProtectedRoute><GestaoColaboradores /></ProtectedRoute>} />
-            <Route path="/admin/conteudo" element={<ProtectedRoute><AdminConteudo /></ProtectedRoute>} />
+            <Route
+              path="/gestao"
+              element={
+                <ProtectedRoute papeis={['gestor', 'admin']}>
+                  <GestaoPainel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/gestao/colaboradores"
+              element={
+                <ProtectedRoute papeis={['gestor', 'admin']}>
+                  <GestaoColaboradores />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/conteudo"
+              element={
+                <ProtectedRoute papeis={['gestor', 'admin']}>
+                  <AdminConteudo />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Rota padrão — redireciona para login */}
             <Route path="*" element={<Navigate to="/login" replace />} />

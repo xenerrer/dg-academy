@@ -8,14 +8,17 @@ interface AppNavProps {
   pontos: number
 }
 
-const LINKS = [
-  { href: '/', rotulo: '/minhaJornada' },
+const LINK_JORNADA = { href: '/', rotulo: '/minhaJornada' }
+const LINKS_GESTAO = [
   { href: '/gestao', rotulo: '/gestãoRH' },
   { href: '/admin/conteudo', rotulo: '/conteúdo' },
 ]
 
 export function AppNav({ usuario, pontos }: AppNavProps) {
   const { pathname } = useLocation()
+
+  const ehGestao = usuario?.papel === 'gestor' || usuario?.papel === 'admin'
+  const links = ehGestao ? [LINK_JORNADA, ...LINKS_GESTAO] : [LINK_JORNADA]
 
   const iniciais = usuario?.nome
     .split(' ')
@@ -31,7 +34,7 @@ export function AppNav({ usuario, pontos }: AppNavProps) {
           <img src="/logo-dgtech.png" alt="DG Tech" className="h-10 w-auto object-contain" />
         </Link>
         <div className="hidden gap-5 text-[13.5px] font-semibold md:flex">
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               to={link.href}
