@@ -123,12 +123,13 @@ const SETORES = [
 ]
 
 interface FormCadastroProps {
-  onCadastrar: (dados: { nome: string; cargo: string; setorId: string }) => void
+  onCadastrar: (dados: { nome: string; cargo: string; setorId: string; email: string }) => void
 }
 
 export function FormCadastro({ onCadastrar }: FormCadastroProps) {
   const [nome, setNome] = useState('')
   const [cargo, setCargo] = useState('')
+  const [email, setEmail] = useState('')
   const [setorId, setSetorId] = useState<string | null>(null)
   const setor = SETORES.find((s) => s.id === setorId)
 
@@ -138,7 +139,7 @@ export function FormCadastro({ onCadastrar }: FormCadastroProps) {
       onSubmit={(e) => {
         e.preventDefault()
         if (!setorId) return
-        onCadastrar({ nome, cargo, setorId })
+        onCadastrar({ nome, cargo, setorId, email })
       }}
     >
       <div className="grid gap-3 sm:grid-cols-2">
@@ -163,7 +164,13 @@ export function FormCadastro({ onCadastrar }: FormCadastroProps) {
       </div>
       <label className="block">
         <span className="mb-1.5 block text-label text-dg-muted">E-mail</span>
-        <Input type="email" placeholder="colaborador@dgtech.com.br" required />
+        <Input
+          type="email"
+          placeholder="colaborador@dgtech.com.br"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
       </label>
 
       <div>

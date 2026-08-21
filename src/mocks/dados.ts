@@ -58,6 +58,29 @@ export const USUARIO_ATUAL: Profile = {
   criado_em: '2026-07-10T00:00:00Z',
 }
 
+/** Conta de teste do colaborador — mesmo perfil do Marcos, e-mail de teste do cliente. */
+export const USUARIO_TESTE_COLABORADOR: Profile = {
+  ...USUARIO_ATUAL,
+  id: 'user-teste-colaborador',
+  nome: 'Colaborador Teste',
+  email: 'colaborador@dgtech.com.br',
+  onboarding_concluido_em: '2026-07-10T00:00:00Z',
+}
+
+/** Conta de teste do admin — vê a área de gestão (/gestao, /admin/conteudo). */
+export const USUARIO_TESTE_ADMIN: Profile = {
+  id: 'user-teste-admin',
+  tenant_id: TENANT_ID,
+  nome: 'Admin Teste',
+  email: 'admin@dgtech.com.br',
+  cargo: 'Administrador',
+  setor_id: 'setor-adm',
+  foto_url: null,
+  papel: 'admin',
+  onboarding_concluido_em: '2026-07-10T00:00:00Z',
+  criado_em: '2026-07-10T00:00:00Z',
+}
+
 export const TRILHA: Trilha = {
   id: 'trilha-integracao',
   tenant_id: TENANT_ID,
@@ -77,15 +100,6 @@ export const TRILHA_MISSAO_VISAO_VALORES: Trilha = {
   ativa: true,
 }
 
-export const TRILHA_CODIGOS_CONDUTA: Trilha = {
-  id: 'trilha-codigos-conduta',
-  tenant_id: TENANT_ID,
-  nome: 'Códigos de Conduta',
-  descricao: 'Normas e princípios éticos que orientam o comportamento na DG Tech.',
-  ordem: 11,
-  ativa: true,
-}
-
 export const MODULOS: Modulo[] = [
   // Trilha: Integração DG Tech
   { id: 'mod-1', trilha_id: TRILHA.id, numero: 1, titulo: 'Boas-vindas à DG', descricao: null, capa_url: '/capas/mod-1.jpg', ordem: 0 },
@@ -101,7 +115,15 @@ export const MODULOS: Modulo[] = [
     destaque: true,
   },
   { id: 'mod-2', trilha_id: TRILHA.id, numero: 3, titulo: 'Cultura, Missão & Valores', descricao: null, capa_url: '/capas/mod-2.jpg', ordem: 2 },
-  { id: 'mod-3', trilha_id: TRILHA.id, numero: 4, titulo: 'Código de Conduta', descricao: 'As regras da casa — do jeito DG de ser.', capa_url: '/capas/mod-3.jpg', ordem: 3 },
+  {
+    id: 'mod-3',
+    trilha_id: TRILHA.id,
+    numero: 4,
+    titulo: 'Código de Conduta',
+    descricao: 'Normas e princípios éticos que orientam o comportamento na DG Tech — playlist com os vídeos reais.',
+    capa_url: '/capas/mod-3.jpg',
+    ordem: 3,
+  },
   { id: 'mod-4', trilha_id: TRILHA.id, numero: 5, titulo: 'Segurança & EPIs', descricao: null, capa_url: '/capas/mod-4.jpg', ordem: 4 },
   { id: 'mod-5', trilha_id: TRILHA.id, numero: 6, titulo: 'Materiais & Ferramentas', descricao: null, capa_url: '/capas/mod-5.jpg', ordem: 5 },
   { id: 'mod-6', trilha_id: TRILHA.id, numero: 7, titulo: 'Certificação DG Tech', descricao: null, capa_url: '/capas/mod-6.jpg', ordem: 6 },
@@ -115,33 +137,12 @@ export const MODULOS: Modulo[] = [
   { id: 'mod-mvv-1', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 1, titulo: 'Nossa Missão', descricao: 'O propósito que nos move.', capa_url: '/capas/mod-mvv-1.jpg', ordem: 7 },
   { id: 'mod-mvv-2', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 2, titulo: 'Nossa Visão', descricao: 'Onde queremos chegar.', capa_url: '/capas/mod-mvv-2.jpg', ordem: 8 },
   { id: 'mod-mvv-3', trilha_id: TRILHA_MISSAO_VISAO_VALORES.id, numero: 3, titulo: 'Nossos Valores', descricao: 'Os princípios que nos guiam.', capa_url: '/capas/mod-mvv-3.jpg', ordem: 9 },
-
-  // Trilha: Códigos de Conduta (obrigatória) — playlist com os vídeos reais, mesmo padrão de "Regras da Casa"
-  {
-    id: 'mod-codigos-conduta',
-    trilha_id: TRILHA_CODIGOS_CONDUTA.id,
-    numero: 1,
-    titulo: 'Códigos de Conduta',
-    descricao: 'Normas e princípios éticos que orientam o comportamento na DG Tech.',
-    capa_url: '/capas/mod-cond-1.jpg',
-    ordem: 10,
-  },
 ]
 
 export const AULAS: Aula[] = [
   // Trilha: Integração DG Tech
   { id: 'aula-1', modulo_id: 'mod-1', titulo: 'Boas-vindas à DG', descricao: null, panda_video_id: null, duracao_seg: 180, ordem: 0 },
   { id: 'aula-2', modulo_id: 'mod-2', titulo: 'Cultura, Missão & Valores', descricao: null, panda_video_id: null, duracao_seg: 240, ordem: 0 },
-  {
-    id: 'aula-3',
-    modulo_id: 'mod-3',
-    titulo: 'Código de Conduta',
-    descricao:
-      'O que é conduta? Conduta não é um manual na gaveta. Não é uma lista de proibições. Conduta é a soma de todas as escolhas que fazemos quando ninguém está olhando — e é exatamente isso que constrói a reputação da DG Tech em cada obra, em cada cliente, em cada aperto de mão.',
-    panda_video_id: null,
-    duracao_seg: 204,
-    ordem: 0,
-  },
   { id: 'aula-4', modulo_id: 'mod-4', titulo: 'Segurança & EPIs', descricao: null, panda_video_id: null, duracao_seg: 300, ordem: 0 },
   { id: 'aula-5', modulo_id: 'mod-5', titulo: 'Materiais & Ferramentas', descricao: null, panda_video_id: null, duracao_seg: 260, ordem: 0 },
   { id: 'aula-6', modulo_id: 'mod-6', titulo: 'Certificação DG Tech', descricao: null, panda_video_id: null, duracao_seg: 320, ordem: 0 },
@@ -151,25 +152,25 @@ export const AULAS: Aula[] = [
   { id: 'aula-mvv-2', modulo_id: 'mod-mvv-2', titulo: 'Nossa Visão', descricao: 'Veja onde queremos chegar como empresa.', panda_video_id: null, duracao_seg: 220, ordem: 0 },
   { id: 'aula-mvv-3', modulo_id: 'mod-mvv-3', titulo: 'Nossos Valores', descricao: 'Os princípios que guiam todas as nossas decisões.', panda_video_id: null, duracao_seg: 260, ordem: 0 },
 
-  // Trilha: Códigos de Conduta (obrigatória) — playlist do módulo "Códigos de Conduta"
-  { id: 'aula-cond-01', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 01', descricao: null, panda_video_id: '33442ccf-a2ab-446d-9102-c73b9c4a685a', duracao_seg: 93, ordem: 0 },
-  { id: 'aula-cond-03', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 03', descricao: null, panda_video_id: 'c0b0f21a-be18-4074-b0d9-86ef6d6f6b25', duracao_seg: 276, ordem: 1 },
-  { id: 'aula-cond-04c', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 04c', descricao: null, panda_video_id: 'a032ce2c-57d6-4da8-b90c-750133e4d880', duracao_seg: 163, ordem: 2 },
-  { id: 'aula-cond-05', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 05', descricao: null, panda_video_id: '5e9e58c5-8d22-45f0-a103-2dea2a78a10f', duracao_seg: 52, ordem: 3 },
-  { id: 'aula-cond-06', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 06', descricao: null, panda_video_id: 'ad894feb-7fae-4732-bfd4-3f74aaca0a4a', duracao_seg: 73, ordem: 4 },
-  { id: 'aula-cond-07', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 07', descricao: null, panda_video_id: 'c247fc16-8101-44a2-aad2-ef4536bd9ece', duracao_seg: 105, ordem: 5 },
-  { id: 'aula-cond-08', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 08', descricao: null, panda_video_id: '8c631dfd-c7af-4555-b705-8b1e6801085c', duracao_seg: 130, ordem: 6 },
-  { id: 'aula-cond-09', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 09', descricao: null, panda_video_id: '3c194e4f-7013-4a49-b57e-bcf652478352', duracao_seg: 77, ordem: 7 },
-  { id: 'aula-cond-10', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 10', descricao: null, panda_video_id: '6eb49680-f8b4-40e7-be09-7b21b712d54a', duracao_seg: 146, ordem: 8 },
-  { id: 'aula-cond-11', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 11', descricao: null, panda_video_id: 'a0dc728e-afeb-45ca-a1fa-442911fbaa17', duracao_seg: 121, ordem: 9 },
-  { id: 'aula-cond-12', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 12', descricao: null, panda_video_id: '15967d51-8d24-4527-bb75-504dcb68c42d', duracao_seg: 115, ordem: 10 },
-  { id: 'aula-cond-13', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 13', descricao: null, panda_video_id: '20dae6b2-8db6-4e21-8198-48017d9bc4cb', duracao_seg: 60, ordem: 11 },
-  { id: 'aula-cond-14', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 14', descricao: null, panda_video_id: 'a7212fb3-c721-4254-99e1-58b76c636dc7', duracao_seg: 91, ordem: 12 },
-  { id: 'aula-cond-15', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 15', descricao: null, panda_video_id: 'bd9dd797-3168-4295-b72d-3b516a820ef1', duracao_seg: 98, ordem: 13 },
-  { id: 'aula-cond-16', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 16', descricao: null, panda_video_id: 'c82143fb-708e-489e-8218-797852a52cae', duracao_seg: 57, ordem: 14 },
-  { id: 'aula-cond-17', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 17', descricao: null, panda_video_id: '0dcdcf03-5892-4043-a938-0df332badf34', duracao_seg: 107, ordem: 15 },
-  { id: 'aula-cond-18', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 18', descricao: null, panda_video_id: '2095774d-b2f9-4928-8c83-db4a8bc39e6f', duracao_seg: 151, ordem: 16 },
-  { id: 'aula-cond-19', modulo_id: 'mod-codigos-conduta', titulo: 'Código de Conduta 19', descricao: null, panda_video_id: '7a1e45e3-d3af-4d3e-96e1-e55279c34895', duracao_seg: 48, ordem: 17 },
+  // Trilha: Integração DG Tech — playlist do módulo "Código de Conduta" (mod-3)
+  { id: 'aula-cond-01', modulo_id: 'mod-3', titulo: 'Código de Conduta 01', descricao: null, panda_video_id: '33442ccf-a2ab-446d-9102-c73b9c4a685a', duracao_seg: 93, ordem: 0 },
+  { id: 'aula-cond-03', modulo_id: 'mod-3', titulo: 'Código de Conduta 03', descricao: null, panda_video_id: 'c0b0f21a-be18-4074-b0d9-86ef6d6f6b25', duracao_seg: 276, ordem: 1 },
+  { id: 'aula-cond-04c', modulo_id: 'mod-3', titulo: 'Código de Conduta 04c', descricao: null, panda_video_id: 'a032ce2c-57d6-4da8-b90c-750133e4d880', duracao_seg: 163, ordem: 2 },
+  { id: 'aula-cond-05', modulo_id: 'mod-3', titulo: 'Código de Conduta 05', descricao: null, panda_video_id: '5e9e58c5-8d22-45f0-a103-2dea2a78a10f', duracao_seg: 52, ordem: 3 },
+  { id: 'aula-cond-06', modulo_id: 'mod-3', titulo: 'Código de Conduta 06', descricao: null, panda_video_id: 'ad894feb-7fae-4732-bfd4-3f74aaca0a4a', duracao_seg: 73, ordem: 4 },
+  { id: 'aula-cond-07', modulo_id: 'mod-3', titulo: 'Código de Conduta 07', descricao: null, panda_video_id: 'c247fc16-8101-44a2-aad2-ef4536bd9ece', duracao_seg: 105, ordem: 5 },
+  { id: 'aula-cond-08', modulo_id: 'mod-3', titulo: 'Código de Conduta 08', descricao: null, panda_video_id: '8c631dfd-c7af-4555-b705-8b1e6801085c', duracao_seg: 130, ordem: 6 },
+  { id: 'aula-cond-09', modulo_id: 'mod-3', titulo: 'Código de Conduta 09', descricao: null, panda_video_id: '3c194e4f-7013-4a49-b57e-bcf652478352', duracao_seg: 77, ordem: 7 },
+  { id: 'aula-cond-10', modulo_id: 'mod-3', titulo: 'Código de Conduta 10', descricao: null, panda_video_id: '6eb49680-f8b4-40e7-be09-7b21b712d54a', duracao_seg: 146, ordem: 8 },
+  { id: 'aula-cond-11', modulo_id: 'mod-3', titulo: 'Código de Conduta 11', descricao: null, panda_video_id: 'a0dc728e-afeb-45ca-a1fa-442911fbaa17', duracao_seg: 121, ordem: 9 },
+  { id: 'aula-cond-12', modulo_id: 'mod-3', titulo: 'Código de Conduta 12', descricao: null, panda_video_id: '15967d51-8d24-4527-bb75-504dcb68c42d', duracao_seg: 115, ordem: 10 },
+  { id: 'aula-cond-13', modulo_id: 'mod-3', titulo: 'Código de Conduta 13', descricao: null, panda_video_id: '20dae6b2-8db6-4e21-8198-48017d9bc4cb', duracao_seg: 60, ordem: 11 },
+  { id: 'aula-cond-14', modulo_id: 'mod-3', titulo: 'Código de Conduta 14', descricao: null, panda_video_id: 'a7212fb3-c721-4254-99e1-58b76c636dc7', duracao_seg: 91, ordem: 12 },
+  { id: 'aula-cond-15', modulo_id: 'mod-3', titulo: 'Código de Conduta 15', descricao: null, panda_video_id: 'bd9dd797-3168-4295-b72d-3b516a820ef1', duracao_seg: 98, ordem: 13 },
+  { id: 'aula-cond-16', modulo_id: 'mod-3', titulo: 'Código de Conduta 16', descricao: null, panda_video_id: 'c82143fb-708e-489e-8218-797852a52cae', duracao_seg: 57, ordem: 14 },
+  { id: 'aula-cond-17', modulo_id: 'mod-3', titulo: 'Código de Conduta 17', descricao: null, panda_video_id: '0dcdcf03-5892-4043-a938-0df332badf34', duracao_seg: 107, ordem: 15 },
+  { id: 'aula-cond-18', modulo_id: 'mod-3', titulo: 'Código de Conduta 18', descricao: null, panda_video_id: '2095774d-b2f9-4928-8c83-db4a8bc39e6f', duracao_seg: 151, ordem: 16 },
+  { id: 'aula-cond-19', modulo_id: 'mod-3', titulo: 'Código de Conduta 19', descricao: null, panda_video_id: '7a1e45e3-d3af-4d3e-96e1-e55279c34895', duracao_seg: 48, ordem: 17 },
 
   // Trilha: Integração DG Tech — playlist do módulo "Regras da Casa" (sempre_disponivel)
   { id: 'aula-regras-casa-01', modulo_id: 'mod-regras-casa', titulo: 'Regras da Casa 01', descricao: null, panda_video_id: '05f5df67-bdfc-4315-a222-c9fbc218c5db', duracao_seg: 180, ordem: 0 },
@@ -412,66 +413,67 @@ export const QUESTOES: Questao[] = [
     feedback: 'O valor se prova na entrega e na relação, não só no papel.',
   },
 
-  // Trilha Códigos de Conduta — quiz único do módulo "Códigos de Conduta" (mesmo
-  // padrão do quiz de "Regras da Casa": consolidado no fim da playlist, não por vídeo)
+  // Trilha: Integração DG Tech — continuação do quiz do módulo "Código de Conduta"
+  // (mod-3): q-1/q-2/q-3 acima + estas, consolidadas no fim da playlist de 18
+  // vídeos, não por vídeo — mesmo padrão do quiz de "Regras da Casa".
   {
-    id: 'q-cond-1', modulo_id: 'mod-codigos-conduta', ordem: 0, pontos: 30,
+    id: 'q-cond-1', modulo_id: 'mod-3', ordem: 3, pontos: 30,
     enunciado: 'O que significa agir com integridade no trabalho?',
     alternativas: ['Fazer o que for mais rápido', 'Manter a mesma conduta estando alguém observando ou não', 'Seguir a regra só quando é fiscalizado', 'Só ser honesto com o chefe'],
     indice_correto: 1,
     feedback: 'Integridade é consistência — a mesma conduta com ou sem plateia.',
   },
   {
-    id: 'q-cond-2', modulo_id: 'mod-codigos-conduta', ordem: 1, pontos: 30,
+    id: 'q-cond-2', modulo_id: 'mod-3', ordem: 4, pontos: 30,
     enunciado: 'Um colega sugere burlar uma regra "só dessa vez". Qual a atitude ética?',
     alternativas: ['Aceitar, se ninguém for saber', 'Recusar e seguir o procedimento correto', 'Fazer só se o colega insistir', 'Avisar depois, se der problema'],
     indice_correto: 1,
     feedback: '"Só dessa vez" é como toda quebra de conduta começa — a resposta certa é recusar.',
   },
   {
-    id: 'q-cond-3', modulo_id: 'mod-codigos-conduta', ordem: 2, pontos: 30,
+    id: 'q-cond-3', modulo_id: 'mod-3', ordem: 5, pontos: 30,
     enunciado: 'Por que ética e integridade importam tanto quanto entrega técnica?',
     alternativas: ['Não importam, só a entrega conta', 'Porque sustentam a confiança que permite o negócio existir', 'É só discurso corporativo', 'Só importa pra quem trabalha com cliente direto'],
     indice_correto: 1,
     feedback: 'Sem confiança não tem contrato, não tem obra, não tem empresa — integridade sustenta tudo isso.',
   },
   {
-    id: 'q-cond-4', modulo_id: 'mod-codigos-conduta', ordem: 3, pontos: 30,
+    id: 'q-cond-4', modulo_id: 'mod-3', ordem: 6, pontos: 30,
     enunciado: 'Qual conduta reflete respeito no ambiente de trabalho DG?',
     alternativas: ['Tratar diferente conforme o cargo da pessoa', 'Tratar todos com cordialidade e profissionalismo, sem exceção', 'Ser educado só com quem manda', 'Respeito é opcional em campo'],
     indice_correto: 1,
     feedback: 'Respeito não muda conforme hierarquia ou situação — é constante.',
   },
   {
-    id: 'q-cond-5', modulo_id: 'mod-codigos-conduta', ordem: 4, pontos: 30,
+    id: 'q-cond-5', modulo_id: 'mod-3', ordem: 7, pontos: 30,
     enunciado: 'Você presencia um comentário discriminatório entre colegas. O que fazer?',
     alternativas: ['Ignorar, não é da sua conta', 'Não compactuar e reportar pelos canais adequados', 'Rir também, pra não criar clima ruim', 'Só comentar depois com outros colegas'],
     indice_correto: 1,
     feedback: 'Silêncio compactua. Reportar pelos canais certos é a conduta esperada.',
   },
   {
-    id: 'q-cond-6', modulo_id: 'mod-codigos-conduta', ordem: 5, pontos: 30,
+    id: 'q-cond-6', modulo_id: 'mod-3', ordem: 8, pontos: 30,
     enunciado: 'Por que um ambiente diverso e respeitoso importa para a DG?',
     alternativas: ['Só por exigência legal', 'Porque times diversos e respeitados entregam melhor e retêm talento', 'Não faz diferença no resultado', 'É só uma tendência passageira'],
     indice_correto: 1,
     feedback: 'Respeito e diversidade não são só valor — são vantagem real de time.',
   },
   {
-    id: 'q-cond-7', modulo_id: 'mod-codigos-conduta', ordem: 6, pontos: 30,
+    id: 'q-cond-7', modulo_id: 'mod-3', ordem: 9, pontos: 30,
     enunciado: 'O que caracteriza um conflito de interesse?',
     alternativas: ['Discordar de uma decisão do gestor', 'Uma situação em que interesse pessoal pode influenciar decisão profissional', 'Ter uma opinião forte sobre um projeto', 'Qualquer desentendimento entre colegas'],
     indice_correto: 1,
     feedback: 'Conflito de interesse é quando o pessoal pode torcer o profissional — daí a necessidade de declarar.',
   },
   {
-    id: 'q-cond-8', modulo_id: 'mod-codigos-conduta', ordem: 7, pontos: 30,
+    id: 'q-cond-8', modulo_id: 'mod-3', ordem: 10, pontos: 30,
     enunciado: 'Você percebe que pode se beneficiar pessoalmente de uma decisão que precisa tomar no trabalho. O que fazer?',
     alternativas: ['Decidir e não comentar com ninguém', 'Declarar a situação e afastar-se da decisão', 'Decidir a seu favor, discretamente', 'Pedir a um amigo pra decidir por você informalmente'],
     indice_correto: 1,
     feedback: 'Transparência primeiro: declarar o conflito protege você e a empresa.',
   },
   {
-    id: 'q-cond-9', modulo_id: 'mod-codigos-conduta', ordem: 8, pontos: 30,
+    id: 'q-cond-9', modulo_id: 'mod-3', ordem: 11, pontos: 30,
     enunciado: 'Por que a DG trata conflito de interesse como tema formal de conduta?',
     alternativas: ['Para burocratizar decisões simples', 'Porque decisões enviesadas corroem a confiança e a qualidade da entrega', 'Não é um tema relevante no dia a dia', 'Só se aplica a cargos de diretoria'],
     indice_correto: 1,
@@ -536,7 +538,7 @@ export const COMENTARIOS: Comentario[] = [
   {
     id: 'com-1',
     tenant_id: TENANT_ID,
-    aula_id: 'aula-3',
+    aula_id: 'aula-cond-01',
     user_id: 'user-juliana',
     parent_id: null,
     texto: 'Bem direto ao ponto. Ajuda bastante ter exemplo prático de cliente, não só a regra seca.',
@@ -545,7 +547,7 @@ export const COMENTARIOS: Comentario[] = [
   {
     id: 'com-2',
     tenant_id: TENANT_ID,
-    aula_id: 'aula-3',
+    aula_id: 'aula-cond-01',
     user_id: 'user-rafael',
     parent_id: null,
     texto: 'Essa parte do canal de conduta com discrição eu não conhecia. Bom saber que existe.',

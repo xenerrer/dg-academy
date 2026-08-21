@@ -26,8 +26,9 @@ import {
   SETORES,
   TRILHA,
   TRILHA_MISSAO_VISAO_VALORES,
-  TRILHA_CODIGOS_CONDUTA,
   USUARIO_ATUAL,
+  USUARIO_TESTE_ADMIN,
+  USUARIO_TESTE_COLABORADOR,
 } from '@/mocks/dados'
 import type {
   Comentario,
@@ -55,12 +56,29 @@ const CHAVE_SESSAO = 'dg-sessao'
 /** Perfil de quem passou por "Criar acesso" nesta sessão — ver cadastrar(). */
 const CHAVE_PERFIL_SESSAO = 'dg-perfil-sessao'
 
-export async function entrar() {
+/**
+ * Contas de teste liberadas para o cliente validar o login com papel real.
+ * Quando o Supabase entrar, isto some — a checagem de senha vira
+ * supabase.auth.signInWithPassword e o papel vem de profiles.
+ */
+const CONTAS_TESTE: { email: string; senha: string; perfil: Profile }[] = [
+  { email: 'colaborador@dgtech.com.br', senha: 'DGteste2026!', perfil: USUARIO_TESTE_COLABORADOR },
+  { email: 'admin@dgtech.com.br', senha: 'DGadmin2026!', perfil: USUARIO_TESTE_ADMIN },
+  { email: USUARIO_ATUAL.email, senha: 'DGteste2026!', perfil: USUARIO_ATUAL },
+]
+
+export async function entrar(email: string, senha: string): Promise<Profile> {
+  const conta = CONTAS_TESTE.find(
+    (c) => c.email.toLowerCase() === email.trim().toLowerCase() && c.senha === senha,
+  )
+  if (!conta) {
+    throw new Error('E-mail ou senha incorretos.')
+  }
   // limpa um cadastro de sessão anterior: sem isso, "Entrar" depois de um
   // "Criar acesso" de teste continuaria mostrando o nome digitado antes.
   sessionStorage.removeItem(CHAVE_PERFIL_SESSAO)
-  sessionStorage.setItem(CHAVE_SESSAO, USUARIO_ATUAL.id)
-  return atraso(USUARIO_ATUAL, 320)
+  sessionStorage.setItem(CHAVE_SESSAO, conta.perfil.id)
+  return atraso(conta.perfil, 320)
 }
 
 export async function sair() {
@@ -77,14 +95,21 @@ export async function sair() {
  *
  * Quando o Supabase entrar, isto vira o INSERT em profiles feito pelo RH.
  */
-export async function cadastrar(dados: { nome: string; cargo: string; setorId: string }): Promise<Profile> {
+export async function cadastrar(dados: {
+  nome: string
+  cargo: string
+  setorId: string
+  email: string
+}): Promise<Profile> {
   const perfil: Profile = {
     ...USUARIO_ATUAL,
-    id: 'user-novo',
+    id: `user-${dados.email.trim().toLowerCase() || 'novo'}`,
     nome: dados.nome,
+    email: dados.email.trim().toLowerCase(),
     cargo: dados.cargo,
     setor_id: dados.setorId,
     foto_url: null,
+    papel: 'colaborador',
     onboarding_concluido_em: null,
   }
   try {
@@ -107,7 +132,9 @@ export async function cadastrar(dados: { nome: string; cargo: string; setorId: s
 function perfilDaSessaoAtual(): Profile | null {
   const sessaoId = sessionStorage.getItem(CHAVE_SESSAO)
   if (!sessaoId) return null
-  if (sessaoId === USUARIO_ATUAL.id) return USUARIO_ATUAL
+
+  const contaTeste = CONTAS_TESTE.find((c) => c.perfil.id === sessaoId)
+  if (contaTeste) return contaTeste.perfil
 
   try {
     const bruto = sessionStorage.getItem(CHAVE_PERFIL_SESSAO)
@@ -130,12 +157,12 @@ export async function obterTrilha() {
 
 /**
  * Lista todas as trilhas que um usuário deve ver:
- * - 2 trilhas obrigatórias (Missão/Visão/Valores, Códigos de Conduta)
+ * - 1 trilha obrigatória (Missão/Visão/Valores)
  * - A trilha de integração (por setor do usuário, ou geral) — "Regras da Casa"
- *   vive dentro dela como módulo, não como trilha separada.
+ *   e "Código de Conduta" vivem dentro dela como módulo, não como trilha separada.
  */
 export async function listarTrilhasDoUsuario(): Promise<Trilha[]> {
-  const trilhas: Trilha[] = [TRILHA_MISSAO_VISAO_VALORES, TRILHA_CODIGOS_CONDUTA, TRILHA]
+  const trilhas: Trilha[] = [TRILHA_MISSAO_VISAO_VALORES, TRILHA]
   // Ordenar por ordem (as obrigatórias vêm primeiro)
   return atraso(trilhas.sort((a, b) => a.ordem - b.ordem))
 }

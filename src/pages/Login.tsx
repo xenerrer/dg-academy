@@ -27,14 +27,15 @@ export default function Login() {
   /**
    * Abre a sessão e só então navega. O invalidate é o que faz o ProtectedRoute
    * enxergar o usuário — sem ele a rota de destino devolveria para /login.
+   * Deixa o erro de credencial inválida subir para o FormEntrar exibir.
    */
-  async function acessar() {
-    await entrar()
+  async function acessar(email: string, senha: string) {
+    const perfil = await entrar(email, senha)
     await queryClient.invalidateQueries({ queryKey: ['usuario'] })
-    navigate('/bem-vindo')
+    navigate(perfil.onboarding_concluido_em ? '/' : '/bem-vindo')
   }
 
-  async function cadastrarEAcessar(dados: { nome: string; cargo: string; setorId: string }) {
+  async function cadastrarEAcessar(dados: { nome: string; cargo: string; setorId: string; email: string }) {
     await cadastrar(dados)
     await queryClient.invalidateQueries({ queryKey: ['usuario'] })
     navigate('/bem-vindo')
